@@ -1,0 +1,4 @@
+package com.commerce.server.service;
+
+public class AuthService {
+}
