@@ -35,3 +35,8 @@ spring:
           enable: true
           starttls:
             auth: true
+
+jwt:
+  secret: ${SECRET}
+  access_time: ${ACCESS_TIME}
+  refresh_time: ${REFRESH_TIME}
