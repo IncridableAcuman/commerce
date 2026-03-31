@@ -40,3 +40,7 @@ jwt:
   secret: ${SECRET}
   access_time: ${ACCESS_TIME}
   refresh_time: ${REFRESH_TIME}
+
+file:
+  upload:
+    dir: ${UPLOAD_DIR}
