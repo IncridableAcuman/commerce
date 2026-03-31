@@ -12,16 +12,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/UserResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/BadRequestException.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/BadRequestException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/NotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/NotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/UnauthorizedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/exception/UnauthorizedException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/LoadUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/LoadUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/CookieUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/CookieUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/ServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/ServerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/JwtUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/PasswordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/PasswordUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/PasswordUtil.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

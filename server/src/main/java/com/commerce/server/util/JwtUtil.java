@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -59,10 +60,10 @@ public class JwtUtil {
     public Date extractExpiration(String token){
         return extractClaims(token).getExpiration();
     }
-    public boolean validateToken(String token,User user){
+    public boolean validateToken(String token, UserDetails userDetails){
         try {
             String email = extractSubject(token);
-            return extractExpiration(token).after(new Date()) && email.equals(user.getEmail());
+            return extractExpiration(token).after(new Date()) && email.equals(userDetails.getUsername());
         } catch (Exception e){
             return false;
         }
