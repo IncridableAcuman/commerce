@@ -12,16 +12,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/RabbitMQConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/EmailPayload.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/EmailPayload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/PasswordService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/producer/RabbitMQProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/producer/RabbitMQProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/MailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/MailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/MailUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

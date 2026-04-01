@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserManagementService {
@@ -37,6 +39,23 @@ public class UserManagementService {
     }
     public User create(RegisterRequest request){
         User user = new User();
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        passwordService.hashedPassword(request.getPassword(), user);
+        user.setRole(Role.USER);
+        return saveUser(user);
+    }
+
+    public List<User> userList(){
+        return userRepository.findAll();
+    }
+    public void deleteUser(User user){
+        userRepository.delete(user);
+    }
+    @Transactional
+    public User updateUser(User user,RegisterRequest request){
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setUsername(request.getUsername());
