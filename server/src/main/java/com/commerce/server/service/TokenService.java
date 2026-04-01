@@ -14,6 +14,7 @@ public class TokenService {
     private final CookieUtil cookieUtil;
     private final RedisService redisService;
     private final JwtUtil jwtUtil;
+    private final UserManagementService userManagementService;
 
     public AuthResponse saveToken(User user, HttpServletResponse response){
         String accessToken = jwtUtil.generateAccessToken(user);
@@ -25,5 +26,9 @@ public class TokenService {
     public void clearToken(User user,HttpServletResponse response){
         cookieUtil.clearCookie(response);
         redisService.deleteToken(user);
+    }
+    public User tokenExtraction(String token){
+        String email = jwtUtil.extractSubject(token);
+        return userManagementService.findUser(email);
     }
 }

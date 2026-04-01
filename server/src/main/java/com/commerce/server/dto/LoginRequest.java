@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class LonginRequest {
+public class LoginRequest {
     @Email
     private String email;
 
