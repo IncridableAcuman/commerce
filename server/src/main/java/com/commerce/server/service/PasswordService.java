@@ -1,5 +1,6 @@
 package com.commerce.server.dto;
 
+import com.commerce.server.entity.User;
 import com.commerce.server.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,4 +16,9 @@ public class PasswordService {
             throw new BadRequestException("Password is not equal");
         }
     }
+
+    public void hashedPassword(String password, User user){
+        user.setPassword(passwordEncoder.encode(password));
+    }
+
 }

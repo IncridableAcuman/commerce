@@ -2,6 +2,7 @@ package com.commerce.server.service;
 
 import com.commerce.server.dto.AuthResponse;
 import com.commerce.server.entity.User;
+import com.commerce.server.exception.BadRequestException;
 import com.commerce.server.util.CookieUtil;
 import com.commerce.server.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,14 @@ public class TokenService {
         redisService.deleteToken(user);
     }
     public User tokenExtraction(String token){
+        if (token == null){
+            throw new BadRequestException("Token is null");
+        }
         String email = jwtUtil.extractSubject(token);
-        return userManagementService.findUser(email);
+        User user = userManagementService.findUser(email);
+        if (!jwtUtil.validateToken(token,user)){
+            throw new BadRequestException("Token is invalid or expired");
+        }
+        return user;
     }
 }

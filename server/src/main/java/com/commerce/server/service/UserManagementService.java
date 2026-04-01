@@ -1,5 +1,6 @@
 package com.commerce.server.service;
 
+import com.commerce.server.dto.PasswordService;
 import com.commerce.server.dto.RegisterRequest;
 import com.commerce.server.entity.User;
 import com.commerce.server.enums.Role;
@@ -7,7 +8,6 @@ import com.commerce.server.exception.BadRequestException;
 import com.commerce.server.exception.NotFoundException;
 import com.commerce.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserManagementService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordService passwordService;
 
     public User findUser(String email){
         return userRepository.findByEmail(email).orElseThrow(()->new NotFoundException("User not found"));
@@ -41,7 +41,7 @@ public class UserManagementService {
         user.setLastname(request.getLastname());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        passwordService.hashedPassword(request.getPassword(), user);
         user.setRole(Role.USER);
         return saveUser(user);
     }
