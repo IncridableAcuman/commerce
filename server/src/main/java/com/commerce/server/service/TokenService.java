@@ -29,12 +29,9 @@ public class TokenService {
         redisService.deleteToken(user);
     }
     public User tokenExtraction(String token){
-        if (token == null){
-            throw new BadRequestException("Token is null");
-        }
         String email = jwtUtil.extractSubject(token);
         User user = userManagementService.findUser(email);
-        if (!jwtUtil.validateToken(token,user)){
+        if (!jwtUtil.validateToken(token,user.getEmail())){
             throw new BadRequestException("Token is invalid or expired");
         }
         return user;

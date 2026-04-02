@@ -33,4 +33,8 @@ public class UserController {
     public ResponseEntity<UserResponse> editUser(@RequestParam Long id, @Valid @RequestBody RegisterRequest request){
         return ResponseEntity.ok(userService.editUser(id,request));
     }
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getMe(){
+        return ResponseEntity.ok(userService.getMe());
+    }
 }

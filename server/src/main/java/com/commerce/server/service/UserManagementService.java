@@ -51,9 +51,7 @@ public class UserManagementService {
     public List<User> userList(){
         return userRepository.findAll();
     }
-    public void deleteUser(User user){
-        userRepository.delete(user);
-    }
+
     @Transactional
     public User updateUser(User user,RegisterRequest request){
         user.setFirstname(request.getFirstname());

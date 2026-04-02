@@ -60,10 +60,13 @@ public class JwtUtil {
     public Date extractExpiration(String token){
         return extractClaims(token).getExpiration();
     }
-    public boolean validateToken(String token, UserDetails userDetails){
+    public boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date());
+    }
+    public boolean validateToken(String token, String subject){
         try {
-            String email = extractSubject(token);
-            return extractExpiration(token).after(new Date()) && email.equals(userDetails.getUsername());
+            final String email = extractSubject(token);
+            return (email.equals(subject)) && !isTokenExpired(token);
         } catch (Exception e){
             return false;
         }

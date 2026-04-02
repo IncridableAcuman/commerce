@@ -1,4 +1,5 @@
 package com.commerce.server.enums;
 
-public class Status {
+public enum Status {
+    ACTIVE,INACTIVE
 }
