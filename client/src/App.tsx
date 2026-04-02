@@ -1,15 +1,15 @@
 import { Route, Routes } from "react-router-dom"
-import LandingPage from "./pages/LandingPage"
 import Home from "./pages/Home"
 import Auth from "./pages/Auth"
+import ResetPassword from "./pages/ResetPassword"
 
 const App = () => {
   return (
     <>
     <Routes>
-      <Route path="/landing" element={<LandingPage/>} />
       <Route path="/" element={<Home/>} />
       <Route path="/auth" element={<Auth/>} />
+      <Route path="/reset-password" element={<ResetPassword/>} />
     </Routes>
     </>
   )
