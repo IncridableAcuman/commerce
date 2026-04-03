@@ -9,21 +9,16 @@
       <change afterPath="$PROJECT_DIR$/client/src/components/ui/checkbox.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/components/ui/tabs.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/client/src/pages/Auth.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Size.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Status.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Status.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/TokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/JwtUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/LandingPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Size.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/enums/Size.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/ProductService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
