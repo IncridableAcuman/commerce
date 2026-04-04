@@ -1,6 +1,18 @@
 import {  Mail } from "lucide-react";
+import { useForm } from "react-hook-form";
+import type z from "zod";
+import { forgotPasswordSchema } from "../schema/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ForgotPassword = () => {
+
+  const forgotPasswordForm = useForm<z.input<typeof forgotPasswordSchema>>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: "",
+    }
+  })
+
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-lg bg-white shadow-lg rounded-md p-6">
