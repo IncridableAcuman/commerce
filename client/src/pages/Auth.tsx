@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lock, Mail, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -39,6 +39,13 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
+    useEffect(()=>{
+      const token = localStorage.getItem("accessToken");
+      if(!token){
+        navigate("/auth")
+      }
+    },[navigate])
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gray-50 px-4">

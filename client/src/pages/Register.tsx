@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lock, Mail, UserRound, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
@@ -59,6 +59,13 @@ const Register = () => {
     { name: "username", placeholder: "Username", type: "text", icon: <UserRound size={15} className="text-gray-400 shrink-0" /> },
     { name: "email", placeholder: "example@gmail.com", type: "email", icon: <Mail size={15} className="text-gray-400 shrink-0" /> },
   ];
+
+    useEffect(()=>{
+      const token = localStorage.getItem("accessToken");
+      if(!token){
+        navigate("/auth")
+      }
+    },[navigate])
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">

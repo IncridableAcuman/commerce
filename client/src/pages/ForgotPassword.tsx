@@ -5,8 +5,11 @@ import { forgotPasswordSchema } from "../schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axiosInstance from "../api/axios.instance";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+      const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,6 +30,14 @@ const ForgotPassword = () => {
       toast.error("Message not sent");
     }
   };
+
+
+  useEffect(()=>{
+    const token = localStorage.getItem("accessToken");
+    if(token){
+      navigate("/auth")
+    }
+  },[navigate])
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">

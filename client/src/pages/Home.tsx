@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,7 +14,9 @@ const Home = () => {
   },[navigate])
 
   return (
-    <div>Home</div>
+    <div>
+      <Navbar/>
+    </div>
   )
 }
 

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
+      const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -36,6 +38,13 @@ const ResetPassword = () => {
       setSuccess(true);
     }, 1800);
   };
+
+    useEffect(()=>{
+      const token = localStorage.getItem("accessToken");
+      if(!token){
+        navigate("/auth")
+      }
+    },[navigate])
 
   if (success) {
     return (
