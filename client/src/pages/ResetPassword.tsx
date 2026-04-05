@@ -41,7 +41,7 @@ const ResetPassword = () => {
 
     useEffect(()=>{
       const token = localStorage.getItem("accessToken");
-      if(!token){
+      if(token){
         navigate("/auth")
       }
     },[navigate])
