@@ -1,4 +1,5 @@
-import { Lock, Mail, UserRound } from "lucide-react";
+import { useState } from "react";
+import { Lock, Mail, UserRound, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
 import { registerSchema } from "../schema/auth.schema";
@@ -7,14 +8,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import axiosInstance from "../api/axios.instance";
 
+type RegisterForm = z.infer<typeof registerSchema>;
+
+interface FieldConfig {
+  name: keyof RegisterForm;
+  placeholder: string;
+  type: string;
+  icon: React.ReactNode;
+}
+
 const Register = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof registerSchema>>({
+  } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstname: "",
@@ -25,120 +37,128 @@ const Register = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = async (values: RegisterForm) => {
+    setLoading(true);
     try {
       const { data } = await axiosInstance.post("/auth/register", values);
       localStorage.setItem("accessToken", data.accessToken);
-      toast.success("Successfully");
+      toast.success("Successfully registered");
       navigate("/");
     } catch (error) {
       console.log(error);
       localStorage.removeItem("accessToken");
       toast.error("Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const fields: FieldConfig[] = [
+    { name: "firstname", placeholder: "Firstname", type: "text", icon: <UserRound size={15} className="text-gray-400 shrink-0" /> },
+    { name: "lastname", placeholder: "Lastname", type: "text", icon: <UserRound size={15} className="text-gray-400 shrink-0" /> },
+    { name: "username", placeholder: "Username", type: "text", icon: <UserRound size={15} className="text-gray-400 shrink-0" /> },
+    { name: "email", placeholder: "example@gmail.com", type: "email", icon: <Mail size={15} className="text-gray-400 shrink-0" /> },
+  ];
+
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center">
-      <div className="w-full max-w-lg bg-white shadow-lg rounded-md p-6">
-        <h1 className="text-2xl font-semibold py-4">Sign Up Now</h1>
-        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 border p-2 rounded-md">
-              <UserRound />
-              <input
-                {...register("firstname")}
-                type="text"
-                placeholder="Firstname"
-                className="outline-none w-full"
-              />
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {/* Top accent */}
+        <div className="h-1 w-full bg-linear-to-r from-teal-400 via-blue-400 to-purple-400" />
+
+        <div className="p-8">
+          {/* Header */}
+          <div className="mb-7">
+            <div className="w-11 h-11 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center mb-5">
+              <UserRound size={18} className="text-gray-500" />
             </div>
-            {errors.firstname && (
-              <span className="text-xs text-red-500">
-                {errors.firstname.message}
-              </span>
-            )}
+            <h1 className="text-xl font-medium text-gray-900">Create account</h1>
+            <p className="text-sm text-gray-400 mt-1">Yangi hisob yarating</p>
           </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 border  p-2 rounded-md">
-              <UserRound />
-              <input
-                {...register("lastname")}
-                type="text"
-                placeholder="Lastname"
-                className="outline-none w-full"
-              />
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
+            {/* Text + Email fields */}
+            {fields.map(({ name, placeholder, type, icon }) => (
+              <div key={name} className="space-y-1.5">
+                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  {placeholder}
+                </label>
+                <div
+                  className={`flex items-center gap-2 border rounded-lg px-3 transition-all duration-200 ${
+                    errors[name]
+                      ? "border-red-400 ring-2 ring-red-100"
+                      : "border-gray-200 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100"
+                  }`}
+                >
+                  {icon}
+                  <input
+                    {...register(name)}
+                    type={type}
+                    placeholder={placeholder}
+                    className="flex-1 py-2.5 text-sm outline-none bg-transparent text-gray-900 placeholder:text-gray-300"
+                  />
+                </div>
+                {errors[name] && (
+                  <p className="text-xs text-red-400">{errors[name]?.message}</p>
+                )}
+              </div>
+            ))}
+
+            {/* Password field */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider">
+                Parol
+              </label>
+              <div
+                className={`flex items-center gap-2 border rounded-lg px-3 transition-all duration-200 ${
+                  errors.password
+                    ? "border-red-400 ring-2 ring-red-100"
+                    : "border-gray-200 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100"
+                }`}
+              >
+                <Lock size={15} className="text-gray-400 shrink-0" />
+                <input
+                  {...register("password")}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="flex-1 py-2.5 text-sm outline-none bg-transparent text-gray-900 placeholder:text-gray-300"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((p) => !p)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-xs text-red-400">{errors.password.message}</p>
+              )}
             </div>
-            {errors.lastname && (
-              <span className="text-xs text-red-500">
-                {errors.lastname.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 border  p-2 rounded-md">
-              <UserRound />
-              <input
-                {...register("username")}
-                type="text"
-                placeholder="Username"
-                className="outline-none w-full"
-              />
-            </div>
-            {errors.username && (
-              <span className="text-xs text-red-500">
-                {errors.username.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 border  p-2 rounded-md">
-              <Mail />
-              <input
-                {...register("email")}
-                type="email"
-                placeholder="example@gmail.com"
-                className="outline-none w-full"
-              />
-            </div>
-            {errors.email && (
-              <span className="text-xs text-red-500">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 border p-2 rounded-md">
-              <Lock />
-              <input
-                {...register("password")}
-                type="password"
-                placeholder="********"
-                className="outline-none w-full"
-              />
-            </div>
-            {errors.password && (
-              <span className="text-xs text-red-500">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-black text-white p-3 rounded-md cursor-pointer hover:bg-gray-800
-           transition dur3"
-          >
-            Sign Up Now
-          </button>
-        </form>
-        <div className="pt-4">
-          <p>
-            Already have an account?{" "}
-            <Link
-              to={"/auth"}
-              className="font-bold cursor-pointer hover:underline"
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-1 bg-gray-900 text-white py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2 hover:bg-gray-700 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Sign In
+              {loading ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                <ArrowRight size={15} />
+              )}
+              {loading ? "Ro'yxatdan o'tilmoqda..." : "Sign up"}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <p className="text-sm text-gray-400 text-center mt-6">
+            Hisobingiz bormi?{" "}
+            <Link
+              to="/auth"
+              className="text-gray-900 font-medium hover:underline underline-offset-2"
+            >
+              Sign in
             </Link>
           </p>
         </div>
