@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogOut, Menu, X, User } from "lucide-react";
+import { toast } from "react-toastify";
+import axiosInstance from "../api/axios.instance";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -13,12 +15,21 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/auth");
-  };
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSubmit = async ()=> {
+    try {
+      const {data} = await axiosInstance.post("/auth/logout");
+      localStorage.removeItem("accessToken");
+      toast.success(data);
+      navigate("/auth")
+    } catch (error) {
+      console.log(error);
+      toast.error("Logging out failed");
+    }
+  }
+
 
   return (
     <nav className="w-full border-b border-gray-100 bg-white sticky top-0 z-50 shadow">
@@ -57,7 +68,7 @@ const Navbar = () => {
             <span className="text-sm text-gray-600">Username</span>
           </div>
           <button
-            onClick={handleLogout}
+            onClick={handleSubmit}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all duration-150"
           >
             <LogOut size={14} />
@@ -99,7 +110,7 @@ const Navbar = () => {
               <span className="text-sm text-gray-500">Username</span>
             </div>
             <button
-              onClick={handleLogout}
+              onClick={handleSubmit}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-red-400 hover:bg-red-50 transition-all"
             >
               <LogOut size={14} />
