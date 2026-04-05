@@ -35,7 +35,7 @@ adminAxiosInstance.interceptors.response.use(
             } catch (error) {
                 console.log(error);
                 localStorage.removeItem("accessToken");
-                window.location.href="/auth"
+                window.location.href="/login"
             }
         }
     }
