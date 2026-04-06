@@ -143,17 +143,6 @@ const Login = () => {
               {loading ? "Kirish..." : "Sign in"}
             </button>
           </form>
-
-          {/* Footer */}
-          <p className="text-sm text-gray-400 text-center mt-6">
-            Hisobingiz yo'qmi?{" "}
-            <Link
-              to="/register"
-              className="text-gray-900 font-medium hover:underline underline-offset-2"
-            >
-              Sign up
-            </Link>
-          </p>
         </div>
       </div>
     </div>
