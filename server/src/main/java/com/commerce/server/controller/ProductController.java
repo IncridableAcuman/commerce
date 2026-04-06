@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) throws IOException {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @ModelAttribute ProductRequest request) throws IOException {
         return ResponseEntity.ok(productService.createProduct(request));
     }
     @GetMapping("/list")

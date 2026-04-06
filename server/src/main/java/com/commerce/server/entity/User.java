@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "enabled",nullable = false)
+    public boolean enabled;
+
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {

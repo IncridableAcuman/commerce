@@ -17,13 +17,17 @@ public class AuthService {
     private final PasswordService passwordService;
     private final RedisService redisService;
 
-    public AuthResponse register(RegisterRequest request, HttpServletResponse response){
+    public void register(RegisterRequest request){
         userManagementService.existUser(request.getEmail());
         User user = userManagementService.create(request);
-       return tokenService.saveToken(user,response);
+        mailService.sendVerificationEmail(user);
+
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response)  {
         User user = userManagementService.findUser(request.getEmail());
+        if (!user.isEnabled()){
+            throw new BadRequestException("Email not verified");
+        }
         passwordService.matchedPassword(request.getPassword(),user.getPassword());
         return tokenService.saveToken(user,response);
     }
@@ -48,6 +52,14 @@ public class AuthService {
     public void resetPassword(ResetPasswordRequest request){
         User user = tokenService.tokenExtraction(request.getToken());
         passwordService.hashedPassword(request.getPassword(),user);
+        userManagementService.saveUser(user);
+    }
+    public void verifyEmail(String token){
+        User user = tokenService.tokenExtraction(token);
+        if (user.isEnabled()){
+            throw new BadRequestException("User already verified");
+        }
+        user.setEnabled(true);
         userManagementService.saveUser(user);
     }
 }

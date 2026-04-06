@@ -50,4 +50,24 @@ public class MailService {
         EmailPayload payload = new EmailPayload(user.getEmail(), "Reset Password",html);
         rabbitMQProducer.queueEmail(payload);
     }
+
+    public void sendVerificationEmail(User user){
+        String token = jwtUtil.generateAccessToken(user);
+
+        String url = "http://localhost:5173/verify-email?token="+token;
+
+        String html = """
+                <h2>Email tasdiqlash</h2>
+                        <p>Salom, %s</p>
+                        <a href="%s">Emailni tasdiqlash</a>
+                """.formatted(user.getEmail(),url);
+
+        EmailPayload payload = new EmailPayload(
+                user.getEmail(),
+                "Verify Email",
+                html
+        );
+
+        rabbitMQProducer.queueEmail(payload);
+    }
 }

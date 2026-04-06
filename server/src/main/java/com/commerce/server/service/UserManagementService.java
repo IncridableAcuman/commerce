@@ -45,6 +45,7 @@ public class UserManagementService {
         user.setEmail(request.getEmail());
         passwordService.hashedPassword(request.getPassword(), user);
         user.setRole(Role.USER);
+        user.setEnabled(false);
         return saveUser(user);
     }
 

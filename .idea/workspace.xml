@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="94eb9deb-8cf3-4aef-b447-46b51bd1f1dc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/MailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/MailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/MailUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/util/MailUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/service/UserManagementService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

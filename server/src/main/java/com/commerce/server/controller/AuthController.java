@@ -15,8 +15,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request, HttpServletResponse response){
-        return ResponseEntity.ok(authService.register(request,response));
+    public ResponseEntity<String > register(@Valid @RequestBody RegisterRequest request){
+        authService.register(request);
+        return ResponseEntity.ok("Verification link sent to email");
     }
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request,HttpServletResponse response) {
@@ -40,5 +41,10 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequest request){
         authService.resetPassword(request);
         return ResponseEntity.ok("Password updated successfully");
+    }
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam String token){
+        authService.verifyEmail(token);
+        return ResponseEntity.ok("Email verified successfully");
     }
 }
