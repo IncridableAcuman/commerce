@@ -1,13 +1,24 @@
 import { LogOut, Bell, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import adminAxiosInstance from "../api/axiosInstance";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/auth");
+  const handleLogout = async () => {
+    try {
+      const {data} = await adminAxiosInstance.post("/auth/logout");
+      toast.success(data);
+      localStorage.removeItem("accessToken");
+      navigate("/login")
+    } catch (error) {
+      console.log(error);
+      toast.error("Logging out failed")
+    }
   };
+
+  
 
   return (
     <header className="w-full h-14 bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0">

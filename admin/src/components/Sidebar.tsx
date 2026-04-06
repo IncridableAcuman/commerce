@@ -2,11 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  Settings,
-  Users,
-  BarChart2,
-  FileText,
   ChevronDown,
+  List,
+  PlusSquare,
+  ShoppingBag,
 } from "lucide-react";
 
 interface NavItem {
@@ -18,17 +17,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Dashboard", path: "/", icon: <LayoutDashboard size={16} /> },
-  { label: "Analytics", path: "/analytics", icon: <BarChart2 size={16} /> },
-  { label: "Users", path: "/users", icon: <Users size={16} /> },
-  {
-    label: "Reports",
-    icon: <FileText size={16} />,
-    children: [
-      { label: "Monthly", path: "/reports/monthly" },
-      { label: "Annual", path: "/reports/annual" },
-    ],
-  },
-  { label: "Settings", path: "/settings", icon: <Settings size={16} /> },
+  { label: "Add items", path: "/add", icon: <PlusSquare size={16} /> },
+  { label: "List Items", path: "/items", icon: <List size={16} /> },
+  { label: "Orders", path: "/orders", icon: <ShoppingBag size={16} /> },
 ];
 
 const Sidebar = () => {
