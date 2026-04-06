@@ -6,6 +6,7 @@ import Layout from "./layout/Layout"
 import AddItems from "./pages/AddItems"
 import Items from "./pages/Items"
 import Orders from "./pages/Orders"
+import UserManagement from "./pages/UserManagement"
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <Route path="add" element={<AddItems/>} />
       <Route path="items" element={<Items/>} />
       <Route path="orders" element={<Orders/>} />
+      <Route path="list" element={<UserManagement/>} />
       </Route>
       <Route path="/login" element={<Login/>} />
     </Routes>

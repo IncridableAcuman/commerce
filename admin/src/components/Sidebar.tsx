@@ -6,6 +6,7 @@ import {
   List,
   PlusSquare,
   ShoppingBag,
+  Users,
 } from "lucide-react";
 
 interface NavItem {
@@ -20,6 +21,7 @@ const navItems: NavItem[] = [
   { label: "Add items", path: "/add", icon: <PlusSquare size={16} /> },
   { label: "List Items", path: "/items", icon: <List size={16} /> },
   { label: "Orders", path: "/orders", icon: <ShoppingBag size={16} /> },
+  { label: "User Mangement", path: "/list", icon: <Users size={16} /> },
 ];
 
 const Sidebar = () => {
