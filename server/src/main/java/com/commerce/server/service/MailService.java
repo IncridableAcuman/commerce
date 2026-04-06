@@ -16,7 +16,38 @@ public class MailService {
     public void sendMail(User user){
         String token = jwtUtil.generateAccessToken(user);
         String url = "http://localhost:5173/reset-password?token="+token;
-        EmailPayload payload = new EmailPayload(user.getEmail(), "Reset Password",url);
+
+        String html = """
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                            <h2 style="color: #2c3e50;">Reset Password</h2>
+                
+                            <p>Salom, %s 👋</p>
+                
+                            <p>Parolingizni tiklash uchun quyidagi tugmani bosing:</p>
+                
+                            <a href="%s"
+                               style="
+                                   display: inline-block;
+                                   padding: 12px 24px;
+                                   background-color: #4CAF50;
+                                   color: white;
+                                   text-decoration: none;
+                                   border-radius: 6px;
+                                   font-weight: bold;
+                                   margin-top: 10px;">
+                                Reset Password
+                            </a>
+                
+                            <p style="margin-top: 20px; color: gray;">
+                                Agar bu siz bo‘lmasangiz, ushbu xabarni e’tiborsiz qoldiring.
+                            </p>
+                        </div>
+                """.formatted(
+                        user.getEmail(),
+                url
+        );
+
+        EmailPayload payload = new EmailPayload(user.getEmail(), "Reset Password",html);
         rabbitMQProducer.queueEmail(payload);
     }
 }
