@@ -5,8 +5,8 @@ const adminAxiosInstance: AxiosInstance = axios.create({
     baseURL: "http://localhost:8080/api/v1"
 });
 
-interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig{
-    _retry:boolean;
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+    _retry: boolean;
 }
 
 adminAxiosInstance.interceptors.request.use(
@@ -21,21 +21,21 @@ adminAxiosInstance.interceptors.request.use(
 );
 
 adminAxiosInstance.interceptors.response.use(
-    (response:AxiosResponse)=> response,
-    async (error:AxiosError)=>{
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
         const originalRequest = error.config as CustomAxiosRequestConfig;
 
-        if(error.response?.status === 401 && !originalRequest._retry){
-            originalRequest._retry=true;
+        if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
+            originalRequest._retry = true;
             try {
-                const {data} = await adminAxiosInstance.get("/auth/refresh");
-                localStorage.setItem("accessToken",data.accessToken);
-                originalRequest.headers.Authorization=`Bearer ${data.accessToken}`;
+                const { data } = await adminAxiosInstance.get("/auth/refresh");
+                localStorage.setItem("accessToken", data.accessToken);
+                originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
                 return adminAxiosInstance(originalRequest);
             } catch (error) {
                 console.log(error);
                 localStorage.removeItem("accessToken");
-                window.location.href="/login"
+                window.location.href = "/login"
             }
         }
     }
