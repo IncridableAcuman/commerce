@@ -1,8 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import { useEffect } from "react";
 
 const Layout = () => {
+  const navigate = useNavigate();
+
+    useEffect(() => {
+      if (!localStorage.getItem("accessToken")) {
+        navigate("/login");
+        return;
+      }
+    }, [navigate]);
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
       <aside className="w-64 h-screen hidden md:flex shrink-0 border-r border-gray-100 bg-white">

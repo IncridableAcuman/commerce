@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
-      navigate("/auth");
+      navigate("/login");
       return;
     }
     const fetchData = async () => {
