@@ -1,5 +1,6 @@
 package com.commerce.server.service;
 
+import com.commerce.server.dto.EditUserRequest;
 import com.commerce.server.dto.RegisterRequest;
 import com.commerce.server.dto.UserResponse;
 import com.commerce.server.entity.User;
@@ -29,7 +30,7 @@ public class UserService {
         User user = userManagementService.findUser(id);
         userManagementService.removeUser(user);
     }
-    public UserResponse editUser(Long id, RegisterRequest request){
+    public UserResponse editUser(Long id, EditUserRequest request){
         User user = userManagementService.findUser(id);
         User updatedUser = userManagementService.updateUser(user,request);
         return UserResponse.from(updatedUser);

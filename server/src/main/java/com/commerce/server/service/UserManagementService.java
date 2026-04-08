@@ -1,5 +1,6 @@
 package com.commerce.server.service;
 
+import com.commerce.server.dto.EditUserRequest;
 import com.commerce.server.dto.PasswordService;
 import com.commerce.server.dto.RegisterRequest;
 import com.commerce.server.entity.User;
@@ -54,13 +55,25 @@ public class UserManagementService {
     }
 
     @Transactional
-    public User updateUser(User user,RegisterRequest request){
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        passwordService.hashedPassword(request.getPassword(), user);
-        user.setRole(Role.USER);
+    public User updateUser(User user, EditUserRequest request){
+        if (request.getFirstname() != null){
+            user.setFirstname(request.getFirstname());
+        }
+        if (request.getLastname() != null){
+            user.setLastname(request.getLastname());
+        }
+       if (request.getUsername() != null){
+           user.setUsername(request.getUsername());
+       }
+        if (request.getEmail() != null){
+            user.setEmail(request.getEmail());
+        }
+        if (request.getPassword() != null){
+            passwordService.hashedPassword(request.getPassword(), user);
+        }
+        if (request.getRole() != null){
+            user.setRole(user.getRole());
+        }
         return saveUser(user);
     }
 }

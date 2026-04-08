@@ -2,6 +2,7 @@ package com.commerce.server.controller;
 
 import java.util.List;
 
+import com.commerce.server.dto.EditUserRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.commerce.server.dto.RegisterRequest;
 import com.commerce.server.dto.UserResponse;
 import com.commerce.server.service.UserService;
 
@@ -38,7 +38,7 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully");
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> editUser(@PathVariable Long id, @Valid @RequestBody RegisterRequest request){
+    public ResponseEntity<UserResponse> editUser(@PathVariable Long id, @Valid @RequestBody EditUserRequest request){
         return ResponseEntity.ok(userService.editUser(id,request));
     }
     @GetMapping("/me")
