@@ -12,7 +12,13 @@ const UserManagement = () => {
   // Edit modal state
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-  const [editData, setEditData] = useState({ firstname: "", lastname: "", username: "", email: "", role: "" });
+  const [editData, setEditData] = useState({
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    role: "",
+  });
 
   useEffect(() => {
     const getUserList = async () => {
@@ -64,8 +70,13 @@ const UserManagement = () => {
   const handleEditSubmit = async () => {
     if (!selectedUser) return;
     try {
-      const { data } = await adminAxiosInstance.put(`/user/${selectedUser.id}`, editData);
-      setUsers((prev) => prev.map((u) => (u.id === selectedUser.id ? data : u)));
+      const { data } = await adminAxiosInstance.patch(
+        `/user/${selectedUser.id}`,
+        editData,
+      );
+      setUsers((prev) =>
+        prev.map((u) => (u.id === selectedUser.id ? data : u)),
+      );
       toast.success("Foydalanuvchi yangilandi");
       setIsEditOpen(false);
       setSelectedUser(null);
@@ -91,7 +102,10 @@ const UserManagement = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="border-t border-t-gray-300 hover:bg-gray-50 text-sm">
+            <tr
+              key={user.id}
+              className="border-t border-t-gray-300 hover:bg-gray-50 text-sm"
+            >
               <td className="p-3">{user.id}</td>
               <td className="p-3">{user.firstname}</td>
               <td className="p-3">{user.lastname}</td>
@@ -110,7 +124,10 @@ const UserManagement = () => {
                 </button>
 
                 {openMenu === user.id && (
-                  <div ref={menuRef} className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+                  <div
+                    ref={menuRef}
+                    className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-50"
+                  >
                     <button
                       onClick={() => openEditModal(user)}
                       className="flex items-center gap-2 w-full px-3 py-2 hover:bg-gray-100 text-sm"
@@ -144,37 +161,49 @@ const UserManagement = () => {
                 type="text"
                 placeholder="Firstname"
                 value={editData.firstname}
-                onChange={(e) => setEditData({ ...editData, firstname: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, firstname: e.target.value })
+                }
                 className="border px-3 py-2 rounded"
               />
               <input
                 type="text"
                 placeholder="Lastname"
                 value={editData.lastname}
-                onChange={(e) => setEditData({ ...editData, lastname: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, lastname: e.target.value })
+                }
                 className="border px-3 py-2 rounded"
               />
               <input
                 type="text"
                 placeholder="Username"
                 value={editData.username}
-                onChange={(e) => setEditData({ ...editData, username: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, username: e.target.value })
+                }
                 className="border px-3 py-2 rounded"
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={editData.email}
-                onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, email: e.target.value })
+                }
                 className="border px-3 py-2 rounded"
               />
-              <input
-                type="text"
-                placeholder="Role"
+              <select
                 value={editData.role}
-                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, role: e.target.value })
+                }
                 className="border px-3 py-2 rounded"
-              />
+              >
+                <option value="">Role tanlang</option>
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+              </select>
             </div>
             <div className="flex justify-end gap-3 mt-4">
               <button
