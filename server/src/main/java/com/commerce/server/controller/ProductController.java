@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@Valid @ModelAttribute ProductRequest request) throws IOException {
+    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest request) throws IOException {
         return ResponseEntity.ok(productService.createProduct(request));
     }
     @GetMapping("/list")
@@ -30,7 +30,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProduct(id));
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponse> editProduct(@PathVariable Long id,@Valid @RequestBody ProductRequest request) throws IOException {
+    public ResponseEntity<ProductResponse> editProduct(@PathVariable Long id, @ModelAttribute ProductRequest request) throws IOException {
         return ResponseEntity.ok(productService.editProduct(id,request));
     }
 }

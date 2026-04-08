@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="94eb9deb-8cf3-4aef-b447-46b51bd1f1dc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/src/pages/UserManagement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/pages/UserManagement.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/commerce/server/dto/ProductRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
