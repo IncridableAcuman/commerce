@@ -120,7 +120,9 @@ const Items = () => {
           {products.map((product, index) => (
             <tr key={index} className="hover:bg-gray-50">
               <td className="p-3">{product.id}</td>
-              <td className="p-3">Image</td>
+              <td className="p-3">
+                <img src={`http://localhost:8080${product?.image}`} alt="image" className="w-12 h-12 rounded-md" />
+              </td>
               <td className="p-3">{product.title}</td>
               <td className="p-3">{product.description.slice(0, 10)}...</td>
               <td className="p-3">{product.price}$</td>
