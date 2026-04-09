@@ -36,6 +36,6 @@ public class FileService {
 
         Files.copy(file.getInputStream(),filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return filePath.toString();
+        return "/uploads/"+generatedFilename;
     }
 }

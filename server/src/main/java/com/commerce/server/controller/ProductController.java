@@ -3,7 +3,6 @@ package com.commerce.server.controller;
 import com.commerce.server.dto.ProductRequest;
 import com.commerce.server.dto.ProductResponse;
 import com.commerce.server.service.ProductService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +31,10 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponse> editProduct(@PathVariable Long id, @ModelAttribute ProductRequest request) throws IOException {
         return ResponseEntity.ok(productService.editProduct(id,request));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Product deleted successfully");
     }
 }

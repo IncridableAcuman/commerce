@@ -43,13 +43,27 @@ public class ProductService {
     }
     public ProductResponse editProduct(Long id,ProductRequest request) throws IOException {
         Product product = productRepository.findById(id).orElseThrow(()->new NotFoundException("Product not found"));
-        product.setTitle(request.getTitle());
-        product.setDescription(request.getDescription());
-        product.setPrice(request.getPrice());
-        product.setCategory(request.getCategory());
-        product.setSize(request.getSize());
-        product.setImage(fileService.saveFile(request.getImage()));
-        product.setStatus(request.getStatus());
+        if (request.getTitle() != null){
+            product.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null){
+            product.setDescription(request.getDescription());
+        }
+        if (request.getPrice() != 0){
+            product.setPrice(request.getPrice());
+        }
+        if (request.getCategory() != null){
+            product.setCategory(request.getCategory());
+        }
+        if (request.getSize() != null){
+            product.setSize(request.getSize());
+        }
+        if (request.getImage() != null){
+            product.setImage(fileService.saveFile(request.getImage()));
+        }
+        if (request.getStatus() != null){
+            product.setStatus(request.getStatus());
+        }
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
     }
