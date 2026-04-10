@@ -24,13 +24,16 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-const ProductCard = ({ product }: { product: IProduct }) => (
-  <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col">
+const ProductCard = ({ product }: { product: IProduct }) => {
+  const navigate = useNavigate();
+  return (
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col">
     <div className="relative aspect-square overflow-hidden bg-gray-50">
       <img
         src={`${BASE_URL}${product.image}`}
         alt={product.title}
-        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+        onClick={()=> navigate(`/details/${product.id}`)}
+        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
       />
       <div className="absolute top-2 right-2">
         <StatusBadge status={product.status} />
@@ -61,7 +64,8 @@ const ProductCard = ({ product }: { product: IProduct }) => (
       </div>
     </div>
   </div>
-);
+  );
+}
 
 const ProductSkeleton = () => (
   <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">

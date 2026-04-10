@@ -2,6 +2,8 @@ package com.commerce.server.controller;
 
 import com.commerce.server.dto.ProductRequest;
 import com.commerce.server.dto.ProductResponse;
+import com.commerce.server.enums.Category;
+import com.commerce.server.enums.Status;
 import com.commerce.server.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +38,13 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted successfully");
+    }
+    @GetMapping("/categories/{category}")
+    public ResponseEntity<ProductResponse> getProductByCategory(@PathVariable Category category){
+        return ResponseEntity.ok(productService.findProductByCategory(category));
+    }
+    @GetMapping("/status/{status}")
+    public ResponseEntity<ProductResponse> getProductByStatus(@PathVariable Status status){
+        return ResponseEntity.ok(productService.findProductByStatus(status));
     }
 }

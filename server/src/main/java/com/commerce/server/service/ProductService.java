@@ -3,6 +3,8 @@ package com.commerce.server.service;
 import com.commerce.server.dto.ProductRequest;
 import com.commerce.server.dto.ProductResponse;
 import com.commerce.server.entity.Product;
+import com.commerce.server.enums.Category;
+import com.commerce.server.enums.Status;
 import com.commerce.server.exception.NotFoundException;
 import com.commerce.server.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +68,14 @@ public class ProductService {
         }
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
+    }
+
+    public ProductResponse findProductByCategory(Category category){
+        Product product = productRepository.findByCategory(category).orElseThrow(()->new NotFoundException("Product not found by category"));
+        return ProductResponse.from(product);
+    }
+    public ProductResponse findProductByStatus(Status status){
+        Product product = productRepository.findByStatus(status).orElseThrow(()-> new NotFoundException("Product not found by status"));
+        return ProductResponse.from(product);
     }
 }
