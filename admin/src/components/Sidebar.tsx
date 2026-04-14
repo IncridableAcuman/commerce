@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -8,6 +8,9 @@ import {
   ShoppingBag,
   Users,
 } from "lucide-react";
+import { toast } from "react-toastify";
+import adminAxiosInstance from "../api/axiosInstance";
+import type IUser from "../interface/userInterface";
 
 interface NavItem {
   label: string;
@@ -27,7 +30,21 @@ const navItems: NavItem[] = [
 const Sidebar = () => {
   const location = useLocation();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [user,setUser] = useState<IUser>();
 
+  useEffect(()=>{
+
+    const fetchUser = async () => {
+      try {
+        const {data} = await adminAxiosInstance.get("/user/me");
+        setUser(data)
+      } catch (error) {
+        console.log(error);
+        toast.error("Foydalanuvchini olishda xatolik yuz berdi");
+      }
+    }
+    fetchUser();
+  },[]);
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -109,8 +126,8 @@ const Sidebar = () => {
             U
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-700 truncate">Username</p>
-            <p className="text-xs text-gray-400 truncate">user@email.com</p>
+            <p className="text-sm font-medium text-gray-700 truncate">{user?.username}</p>
+            <p className="text-xs text-gray-400 truncate">{user?.email}</p>
           </div>
         </div>
       </div>

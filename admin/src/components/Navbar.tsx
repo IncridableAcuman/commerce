@@ -2,9 +2,26 @@ import { LogOut, Bell, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import adminAxiosInstance from "../api/axiosInstance";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import type IUser from "../interface/userInterface";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [user,setUser] = useState<IUser>();
+
+  useEffect(()=>{
+
+    const fetchUser = async () => {
+      try {
+        const {data} = await adminAxiosInstance.get("/user/me");
+        setUser(data)
+      } catch (error) {
+        console.log(error);
+        toast.error("Foydalanuvchini olishda xatolik yuz berdi");
+      }
+    }
+    fetchUser();
+  },[]);
 
   const handleLogout = async () => {
     try {
@@ -46,9 +63,9 @@ const Navbar = () => {
         {/* Avatar */}
         <div className="flex items-center gap-2 px-2 py-1 rounded-lg">
           <div className="w-7 h-7 rounded-full bg-linear-to-br from-teal-400 to-blue-400 flex items-center justify-center text-white text-xs font-medium">
-            U
+            {user?.username.slice(0,1)}
           </div>
-          <span className="text-sm text-gray-600 hidden sm:block">Username</span>
+          <span className="text-sm text-gray-600 hidden sm:block">{user?.username}</span>
         </div>
 
         {/* Logout */}
