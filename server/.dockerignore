@@ -1,0 +1,6 @@
+.dockerignore
+.gradle/
+build/
+.gitignore
+.idea/
+.vscode/

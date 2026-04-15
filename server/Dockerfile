@@ -4,7 +4,8 @@ LABEL author="IncridableAcuman"
 
 WORKDIR /app
 
-COPY buil.gradle settings.gradle ./gradlew ./
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle gradle
 
 RUN ./gradlew --dependencies no-daemon
 
