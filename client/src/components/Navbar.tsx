@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogOut, Menu, X, User } from "lucide-react";
 import { toast } from "react-toastify";
 import axiosInstance from "../api/axios.instance";
+import type IUser from "../interface/user.interface";
 
 const navLinks = [
   { label: "Home", path: "/" },
-  { label: "Dashboard", path: "/dashboard" },
-  { label: "Settings", path: "/settings" },
+
 ];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [user,setUser]=useState<IUser>();
 
 
   const isActive = (path: string) => location.pathname === path;
@@ -29,6 +30,19 @@ const Navbar = () => {
       toast.error("Logging out failed");
     }
   }
+
+  useEffect(()=>{
+    const fetchUser = async () => {
+      try {
+        const {data} = await axiosInstance.get("/user/me");
+        setUser(data)
+      } catch (error) {
+        console.log(error);
+        toast.error("Foydalanuvchini olishda xatolik yuz berdi")
+      }
+    }
+    fetchUser();
+  },[])
 
 
   return (
@@ -65,7 +79,7 @@ const Navbar = () => {
             <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
               <User size={12} className="text-gray-500" />
             </div>
-            <span className="text-sm text-gray-600">Username</span>
+            <span className="text-sm text-gray-600">{user?.username}</span>
           </div>
           <button
             onClick={handleSubmit}
