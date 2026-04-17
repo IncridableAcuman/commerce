@@ -10,9 +10,11 @@ import com.commerce.server.repository.CartRepository;
 import com.commerce.server.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class CartService {
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
+    @Transactional
     public Cart createCart(User user){
        return cartRepository.findCartByUser(user).orElseGet(()->{
             Cart cto = new Cart();
@@ -29,22 +32,39 @@ public class CartService {
             return cartRepository.save(cto);
         });
     }
+    @Transactional
     public Cart addToCart(User user,Long productId,int quantity){
-     Cart cart = createCart(user);
-        Product product = productRepository.findById(productId).orElseThrow(()-> new NotFoundException("Product not found"));
-        List<CartItem> cartItems = cart.getCartItems()
-                .stream()
-                .map(item->{
-                    item.setCart(cart);
-                    item.setProduct(product);
-                    item.setQuantity(quantity);
-                    return cartItemRepository.save(item);
-                }).toList();
-        cart.setCartItems(cartItems);
-       return cartRepository.save(cart);
-    }
-    public void clearCart(User user){
         Cart cart = createCart(user);
-        cartRepository.delete(cart);
+        Product product = productRepository.findById(productId).orElseThrow(()-> new NotFoundException("Product not found"));
+
+        Optional<CartItem> existingCartItem = cart.getCartItems().stream()
+                .filter(ci-> Objects.equals(ci.getProduct().getId(), productId)).findFirst();
+        if (existingCartItem.isPresent()){
+            CartItem cartItem = new CartItem();
+            cartItem.setQuantity(quantity);
+            cartItem.setTotal(quantity * product.getPrice());
+            cartItemRepository.save(cartItem);
+        } else {
+            CartItem item = new CartItem();
+            item.setCart(cart);
+            item.setProduct(product);
+            item.setQuantity(quantity);
+            item.setTotal(quantity * product.getPrice());
+            CartItem saved = cartItemRepository.save(item);
+            cart.getCartItems().add(saved);
+        }
+        return cartRepository.save(cart);
+    }
+
+    @Transactional
+    public Cart removeFromCart(User user,Long itemId){
+        Cart cart = createCart(user);
+        CartItem cartItem = cart.getCartItems().stream()
+                .filter(item -> Objects.equals(item.getId(),itemId))
+                .findFirst()
+                .orElseThrow(()-> new NotFoundException("Item not found"));
+        cart.getCartItems().remove(cartItem);
+        cartItemRepository.save(cartItem);
+        return cartRepository.save(cart);
     }
 }
