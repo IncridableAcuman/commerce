@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type IProduct from "../interface/product.interface";
 import axiosInstance from "../api/axios.instance";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<IProduct | null>(null);
+  const [quantity,setQuantity]=useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -19,6 +21,16 @@ const ProductDetails = () => {
 
     fetchProduct();
   }, [id]);
+
+  const addToCart = async () => {
+    try {
+       await axiosInstance.post(`/cart?productId=${id}&&quantity=${quantity}`)
+       toast.success("Successfully added");
+    } catch (error) {
+      console.log(error);
+      toast.error("Qo'shishda xatolik")
+    }
+  }
 
   if (!product) {
     return <div className="p-6">Loading...</div>;
@@ -69,8 +81,20 @@ const ProductDetails = () => {
             <h2 className="text-2xl font-bold mb-4">
               ${product.price}
             </h2>
-
-            <button className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <button className="bg-gray-200 px-2 py-1 border border-gray-300 rounded-md shadow cursor-pointer" 
+              onClick={()=>setQuantity(quantity+1)}>+</button>
+              <button className="text-lg">{quantity}</button>
+              <button className="bg-gray-200 px-2 py-1 border border-gray-300 rounded-md shadow cursor-pointer" 
+              onClick={()=> {
+                if(quantity > 0){
+                  setQuantity(quantity-1)
+                }
+              }}>-</button>
+            </div>
+            <button
+            onClick={addToCart}
+             className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition">
               Add to Cart
             </button>
           </div>

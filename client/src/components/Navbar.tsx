@@ -1,49 +1,58 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LogOut, Menu, X, User } from "lucide-react";
+import { LogOut, Menu, X, User, ShoppingBag } from "lucide-react";
 import { toast } from "react-toastify";
 import axiosInstance from "../api/axios.instance";
 import type IUser from "../interface/user.interface";
 
-const navLinks = [
-  { label: "Home", path: "/" },
-
-];
+const navLinks = [{ label: "Home", path: "/" }];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [user,setUser]=useState<IUser>();
-
+  const [user, setUser] = useState<IUser>();
 
   const isActive = (path: string) => location.pathname === path;
 
-  const handleSubmit = async ()=> {
+  const handleSubmit = async () => {
     try {
-      const {data} = await axiosInstance.post("/auth/logout");
+      const { data } = await axiosInstance.post("/auth/logout");
       localStorage.removeItem("accessToken");
       toast.success(data);
-      navigate("/auth")
+      navigate("/auth");
     } catch (error) {
       console.log(error);
       toast.error("Logging out failed");
     }
-  }
+  };
 
-  useEffect(()=>{
+
+
+  useEffect(() => {
     const fetchUser = async () => {
       try {
-        const {data} = await axiosInstance.get("/user/me");
-        setUser(data)
+        const { data } = await axiosInstance.get("/user/me");
+        setUser(data);
       } catch (error) {
         console.log(error);
-        toast.error("Foydalanuvchini olishda xatolik yuz berdi")
+        toast.error("Foydalanuvchini olishda xatolik yuz berdi");
+      }
+    };
+    fetchUser();
+  }, []);
+
+  useEffect(()=>{
+    const createCart = async () => {
+      try {
+        await axiosInstance.get("/cart");
+      } catch (error) {
+        console.log(error);
+        toast.error("Cart yaratishda xatolik")
       }
     }
-    fetchUser();
+    createCart();
   },[])
-
 
   return (
     <nav className="w-full border-b border-gray-100 bg-white sticky top-0 z-50 shadow">
@@ -52,7 +61,10 @@ const Navbar = () => {
 
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-base font-medium text-gray-900 tracking-tight">
+        <Link
+          to="/"
+          className="text-base font-medium text-gray-900 tracking-tight"
+        >
           MyApp
         </Link>
 
@@ -75,6 +87,9 @@ const Navbar = () => {
 
         {/* Desktop right */}
         <div className="hidden md:flex items-center gap-2">
+          <button className="cursor-pointer" onClick={()=>navigate("/cart")}>
+            <ShoppingBag size={18} />
+          </button>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-100 bg-gray-50">
             <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
               <User size={12} className="text-gray-500" />
