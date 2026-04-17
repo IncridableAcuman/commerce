@@ -12,7 +12,7 @@ public class CartMapper {
 
     public CartDto cartDto(Cart cart){
         CartDto cartDto = new CartDto();
-        cartDto.setId(cartDto.getId());
+        cartDto.setId(cart.getId());
         cartDto.setUserId(cart.getUser().getId());
         List<CartItemDto> cartItemDtoList = cart
                 .getCartItems()
