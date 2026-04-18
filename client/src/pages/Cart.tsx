@@ -1,7 +1,28 @@
 import { MoreVertical } from "lucide-react"
 import Navbar from "../components/Navbar"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify";
+import axiosInstance from "../api/axios.instance";
+import type ICart from "../interface/cart.interface";
 
 const Cart = () => {
+    const [cart,setCart]=useState<ICart>();
+
+    useEffect(()=>{
+        const fetChCart = async () => {
+            try {
+              const {data} = await axiosInstance.get("/cart");
+              setCart(data);  
+            } catch (error) {
+                console.log(error);
+                toast.error("Xatolik yuz berdi")
+            }
+        }
+        fetChCart();
+    },[]);
+
+    console.log(cart);
+
   return (
     <div className="w-full min-h-screen">
         <Navbar/>
