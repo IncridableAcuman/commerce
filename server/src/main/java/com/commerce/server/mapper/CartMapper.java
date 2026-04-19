@@ -2,6 +2,7 @@ package com.commerce.server.mapper;
 
 import com.commerce.server.dto.CartDto;
 import com.commerce.server.dto.CartItemDto;
+import com.commerce.server.dto.ProductResponse;
 import com.commerce.server.entity.Cart;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,8 @@ public class CartMapper {
                 .stream()
                 .map(item -> {
                     CartItemDto dto = new CartItemDto();
-                    dto.setProduct(item.getProduct());
+                    dto.setProduct(ProductResponse.from(item.getProduct()));
                     dto.setQuantity(item.getQuantity());
-                    dto.setTotal(item.getTotal());
                     return dto;
                 }).toList();
         cartDto.setCartItemDtoList(cartItemDtoList);

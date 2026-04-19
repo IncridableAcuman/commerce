@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
@@ -40,20 +39,16 @@ public class CartService {
         Optional<CartItem> existingCartItem = cart.getCartItems().stream()
                 .filter(ci-> Objects.equals(ci.getProduct().getId(), productId)).findFirst();
         if (existingCartItem.isPresent()){
-            CartItem cartItem = new CartItem();
-            cartItem.setQuantity(quantity);
-            cartItem.setTotal(quantity * product.getPrice());
-            cartItemRepository.save(cartItem);
+            CartItem cartItem = existingCartItem.get();
+            cartItem.setQuantity(quantity+cartItem.getQuantity());
         } else {
             CartItem item = new CartItem();
             item.setCart(cart);
             item.setProduct(product);
             item.setQuantity(quantity);
-            item.setTotal(quantity * product.getPrice());
-            CartItem saved = cartItemRepository.save(item);
-            cart.getCartItems().add(saved);
+            cart.getCartItems().add(item);
         }
-        return cartRepository.save(cart);
+        return cart;
     }
 
     @Transactional
@@ -64,7 +59,6 @@ public class CartService {
                 .findFirst()
                 .orElseThrow(()-> new NotFoundException("Item not found"));
         cart.getCartItems().remove(cartItem);
-        cartItemRepository.save(cartItem);
-        return cartRepository.save(cart);
+        return cart;
     }
 }
