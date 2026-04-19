@@ -5,7 +5,6 @@ export default interface ICart {
         {
             product: IProduct;
             quantity:number;
-            total:number;
         }
     ]
     userId:number;

@@ -5,7 +5,6 @@ import com.commerce.server.entity.CartItem;
 import com.commerce.server.entity.Product;
 import com.commerce.server.entity.User;
 import com.commerce.server.exception.NotFoundException;
-import com.commerce.server.repository.CartItemRepository;
 import com.commerce.server.repository.CartRepository;
 import com.commerce.server.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
