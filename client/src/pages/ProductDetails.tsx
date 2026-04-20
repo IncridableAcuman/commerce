@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<IProduct | null>(null);
-  const [quantity,setQuantity]=useState(0);
+  const [quantity,setQuantity]=useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {

@@ -51,10 +51,10 @@ public class CartService {
     }
 
     @Transactional
-    public Cart removeFromCart(User user,Long itemId){
+    public Cart removeFromCart(User user,Long productId){
         Cart cart = createCart(user);
         CartItem cartItem = cart.getCartItems().stream()
-                .filter(item -> Objects.equals(item.getId(),itemId))
+                .filter(item -> Objects.equals(item.getProduct().getId(),productId))
                 .findFirst()
                 .orElseThrow(()-> new NotFoundException("Item not found"));
         cart.getCartItems().remove(cartItem);

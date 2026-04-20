@@ -31,8 +31,8 @@ public class CartController {
     }
 
     @DeleteMapping
-    public ResponseEntity<CartDto> removeFromCart(@AuthenticationPrincipal User user,@RequestParam Long itemId){
-        Cart cart = cartService.removeFromCart(user,itemId);
+    public ResponseEntity<CartDto> removeFromCart(@AuthenticationPrincipal User user,@RequestParam Long productId){
+        Cart cart = cartService.removeFromCart(user,productId);
         return ResponseEntity.ok(cartMapper.cartDto(cart));
     }
 }

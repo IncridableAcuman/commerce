@@ -34,6 +34,17 @@ const Cart = () => {
     return ()=> document.removeEventListener('mousedown',handleClickOutside);
   },[]);
 
+  const handleDeleteItem = async (id:number) => {
+    try {
+      const {data} = await axiosInstance.delete(`/cart?productId=${id}`);
+      toast.success("Successfully deleted");
+      setCart(data);
+    } catch (error) {
+      console.log(error);
+      toast.error('Mahsulotni o\'chirishda xatolik');
+    }
+  }
+
 
   return (
     <div className="w-full min-h-screen">
@@ -89,7 +100,9 @@ const Cart = () => {
                           <Pencil size={14} />
                           Edit
                         </button>
-                        <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-gray-100 transition duration-300">
+                        <button 
+                        onClick={()=>handleDeleteItem(item.product.id)}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-gray-100 transition duration-300">
                           <Trash size={14} />
                           Delete
                         </button>
