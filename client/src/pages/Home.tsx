@@ -1,87 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import type IProduct from "../interface/product.interface";
-import { toast } from "react-toastify";
-import axiosInstance from "../api/axios.instance";
+import { UseProductContext } from "../context/ProductProvider";
+import ProductSkeleton from "../components/ProductSkeleton";
+import ProductCard from "../components/ProductCard";
 
-const BASE_URL = "http://localhost:8080";
-
-const StatusBadge = ({ status }: { status: string }) => {
-  const styles: Record<string, string> = {
-    available: "bg-green-100 text-green-700",
-    sold: "bg-red-100 text-red-700",
-    reserved: "bg-yellow-100 text-yellow-700",
-  };
-  return (
-    <span
-      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-        styles[status.toLowerCase()] ?? "bg-gray-100 text-gray-600"
-      }`}
-    >
-      {status}
-    </span>
-  );
-};
-
-const ProductCard = ({ product }: { product: IProduct }) => {
-  const navigate = useNavigate();
-  return (
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col">
-    <div className="relative aspect-square overflow-hidden bg-gray-50">
-      <img
-        src={`${BASE_URL}${product.image}`}
-        alt={product.title}
-        onClick={()=> navigate(`/details/${product.id}`)}
-        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
-      />
-      <div className="absolute top-2 right-2">
-        <StatusBadge status={product.status} />
-      </div>
-    </div>
-
-    <div className="p-4 flex flex-col gap-2 flex-1">
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
-          {product.title}
-        </h3>
-        <span className="text-sm font-bold text-indigo-600 whitespace-nowrap">
-          ${product.price.toLocaleString()}
-        </span>
-      </div>
-
-      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-        {product.description}
-      </p>
-
-      <div className="mt-auto pt-2 flex items-center gap-2 flex-wrap">
-        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">
-          {product.category}
-        </span>
-        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">
-          Size: {product.size}
-        </span>
-      </div>
-    </div>
-  </div>
-  );
-}
-
-const ProductSkeleton = () => (
-  <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
-    <div className="aspect-square bg-gray-200" />
-    <div className="p-4 flex flex-col gap-3">
-      <div className="h-4 bg-gray-200 rounded w-3/4" />
-      <div className="h-3 bg-gray-200 rounded w-full" />
-      <div className="h-3 bg-gray-200 rounded w-2/3" />
-    </div>
-  </div>
-);
 
 const Home = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { loading,products } = UseProductContext();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -89,19 +16,6 @@ const Home = () => {
       navigate("/auth");
       return;
     }
-
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axiosInstance.get("/product/list");
-        setProducts(data);
-      } catch {
-        toast.error("Mahsulotlarni olishda xatolik yuz berdi");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
   }, [navigate]);
 
   return (

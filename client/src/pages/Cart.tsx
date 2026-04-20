@@ -1,49 +1,12 @@
 import { MoreVertical, Pencil, Trash } from "lucide-react";
 import Navbar from "../components/Navbar";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import axiosInstance from "../api/axios.instance";
-import type ICart from "../interface/cart.interface";
+import { UseCartContext } from "../context/CartProvider";
 
 const Cart = () => {
-  const [cart, setCart] = useState<ICart>();
-  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const { handleDeleteItem,cart,openMenuId,setOpenMenuId,menuRef } = UseCartContext();
 
 
-  useEffect(() => {
-    const fetChCart = async () => {
-      try {
-        const { data } = await axiosInstance.get("/cart");
-        setCart(data);
-      } catch (error) {
-        console.log(error);
-        toast.error("Xatolik yuz berdi");
-      }
-    };
-    fetChCart();
-  }, []);
 
-  useEffect(()=>{
-    const handleClickOutside = (e:MouseEvent) => {
-      if(menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpenMenuId(null)
-      };
-    }
-    document.addEventListener('mousedown',handleClickOutside);
-    return ()=> document.removeEventListener('mousedown',handleClickOutside);
-  },[]);
-
-  const handleDeleteItem = async (id:number) => {
-    try {
-      const {data} = await axiosInstance.delete(`/cart?productId=${id}`);
-      toast.success("Successfully deleted");
-      setCart(data);
-    } catch (error) {
-      console.log(error);
-      toast.error('Mahsulotni o\'chirishda xatolik');
-    }
-  }
 
 
   return (

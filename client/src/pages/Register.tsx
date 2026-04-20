@@ -1,28 +1,19 @@
 import { useEffect, useState } from "react";
 import { Lock, Mail, UserRound, Eye, EyeOff, ArrowRight, Loader2, MailCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import z from "zod";
 import { registerSchema } from "../schema/auth.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
-import axiosInstance from "../api/axios.instance";
+import { UseUserContext } from "../context/UserProvider";
+import type { RegisterForm } from "../schema/authForm";
+import type FieldConfig from "../interface/FieldConfig.interface";
 
-type RegisterForm = z.infer<typeof registerSchema>;
-
-interface FieldConfig {
-  name: keyof RegisterForm;
-  placeholder: string;
-  type: string;
-  icon: React.ReactNode;
-}
 
 const Register = () => {
+  const { loading,sent,sentEmail,registerSubmit } = UseUserContext();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [sentEmail, setSentEmail] = useState("");
+
 
   const {
     register,
@@ -44,19 +35,8 @@ const Register = () => {
     if (token) navigate("/");
   }, [navigate]);
 
-  const onSubmit = async (values: RegisterForm) => {
-    setLoading(true);
-    try {
-      const { data } = await axiosInstance.post("/auth/register", values);
-      toast.success(data);
-      setSentEmail(values.email);
-      setSent(true);
-    } catch (error) {
-      console.log(error);
-      toast.error("Registration failed");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (values: RegisterForm) => {
+    registerSubmit(values);
   };
 
   const fields: FieldConfig[] = [

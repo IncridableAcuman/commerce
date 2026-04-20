@@ -1,30 +1,17 @@
 import { useEffect, useState, useRef } from "react";
 import type IProduct from "../schema/product.schema";
-import { toast } from "react-toastify";
-import adminAxiosInstance from "../api/axiosInstance";
 import { MoreVertical, Pencil, Trash2, X } from "lucide-react";
+import { UseProduct } from "../context/ProductProvider";
 
 const Items = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const { handleDelete,products,openMenuId,setOpenMenuId } = UseProduct();
+
   const [editProduct, setEditProduct] = useState<IProduct | null>(null);
   const [form, setForm] = useState<Partial<IProduct>>({});
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const getProductList = async () => {
-      try {
-        const { data } = await adminAxiosInstance.get("/product/list");
-        setProducts(data);
-      } catch (error) {
-        console.log(error);
-        toast.error("Mahsulotlarni olishda xatolik yuz berdi");
-      }
-    };
-    getProductList();
-  }, []);
 
   // Tashqariga bosilganda dropdown yopilsin
   useEffect(() => {
@@ -35,7 +22,7 @@ const Items = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [setOpenMenuId]);
 
   // Edit modal ochish
   const openEdit = (product: IProduct) => {
@@ -45,59 +32,8 @@ const Items = () => {
     setOpenMenuId(null);
   };
 
-  // Edit modal yopish
-  const closeEdit = () => {
-    setEditProduct(null);
-    setForm({});
-    setImageFile(null);
-  };
 
-  // Edit submit
-  const handleEditSubmit = async () => {
-    if (!editProduct) return;
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("title", form.title ?? "");
-      formData.append("description", form.description ?? "");
-      formData.append("price", String(form.price ?? 0));
-      formData.append("category", form.category ?? "");
-      formData.append("size", form.size ?? "");
-      formData.append("status", form.status ?? "");
-      if (imageFile) formData.append("image", imageFile);
 
-      const { data } = await adminAxiosInstance.patch(
-        `/product/${editProduct.id}`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      setProducts((prev) =>
-        prev.map((p) => (p.id === editProduct.id ? data : p))
-      );
-      toast.success("Mahsulot yangilandi");
-      closeEdit();
-    } catch (error) {
-      console.log(error);
-      toast.error("Yangilashda xatolik yuz berdi");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Delete
-  const handleDelete = async (id: number) => {
-    setOpenMenuId(null);
-    if (!confirm("Mahsulotni o'chirishni tasdiqlaysizmi?")) return;
-    try {
-      await adminAxiosInstance.delete(`/product/${id}`);
-      setProducts((prev) => prev.filter((p) => p.id !== id));
-      toast.success("Mahsulot o'chirildi");
-    } catch (error) {
-      console.log(error);
-      toast.error("O'chirishda xatolik yuz berdi");
-    }
-  };
 
   return (
     <div>

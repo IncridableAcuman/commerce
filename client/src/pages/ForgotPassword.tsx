@@ -1,20 +1,16 @@
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { Mail, ArrowRight, Loader2, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import type z from "zod";
 import { forgotPasswordSchema } from "../schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
-import axiosInstance from "../api/axios.instance";
 import { useNavigate, Link } from "react-router-dom";
+import { UseUserContext } from "../context/UserProvider";
+import type { ForgotForm } from "../schema/authForm";
 
-type ForgotForm = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [sentEmail, setSentEmail] = useState("");
+  const { forgotPasswordSubmit,sent,sentEmail,loading } = UseUserContext();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -30,19 +26,8 @@ const ForgotPassword = () => {
     defaultValues: { email: "" },
   });
 
-  const onSubmit = async (value: ForgotForm) => {
-    setLoading(true);
-    try {
-      const { data } = await axiosInstance.post("/auth/forgot-password", value);
-      toast.success(data);
-      setSentEmail(value.email);
-      setSent(true);
-    } catch (error) {
-      console.log(error);
-      toast.error("Message not sent");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit =  (value: ForgotForm) => {
+    forgotPasswordSubmit(value);   
   };
 
   return (

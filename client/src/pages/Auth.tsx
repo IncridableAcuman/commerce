@@ -5,15 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import type z from "zod";
 import { loginSchema } from "../schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
-import axiosInstance from "../api/axios.instance";
+import { UseUserContext } from "../context/UserProvider";
 
 type LoginForm = z.infer<typeof loginSchema>;
 
 const Auth = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { loginSubmit,loading } = UseUserContext();
 
   const {
     register,
@@ -24,20 +23,8 @@ const Auth = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (values: LoginForm) => {
-    setLoading(true);
-    try {
-      const { data } = await axiosInstance.post("/auth/login", values);
-      localStorage.setItem("accessToken", data.accessToken);
-      toast.success("Successfully logged in");
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      localStorage.removeItem("accessToken");
-      toast.error("Authentication failed");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (values: LoginForm) => {
+    loginSubmit(values);
   };
 
     useEffect(()=>{
