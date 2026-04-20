@@ -1,13 +1,27 @@
 import { Route, Routes } from "react-router-dom"
-import LandingPage from "./pages/LandingPage"
 import Home from "./pages/Home"
+import Auth from "./pages/Auth"
+import ForgotPassword from "./pages/ForgotPassword"
+import ResetPassword from "./pages/ResetPassword"
+import { ToastContainer } from "react-toastify"
+import Register from "./pages/Register"
+import VerifyEmailPage from "./pages/VerifyEmailPage"
+import ProductDetails from "./pages/ProductDetails"
+import Cart from "./pages/Cart"
 
 const App = () => {
   return (
     <>
+    <ToastContainer/>
     <Routes>
-      <Route path="/landing" element={<LandingPage/>} />
       <Route path="/" element={<Home/>} />
+      <Route path="/details/:id" element={<ProductDetails/>} />
+      <Route path="/auth" element={<Auth/>} />
+      <Route path="/forgot-password" element={<ForgotPassword/>} />
+      <Route path="/reset-password" element={<ResetPassword/>} />
+      <Route path="/register" element={<Register/>} />
+      <Route path="/verify-email" element={<VerifyEmailPage/>} />
+      <Route path="/cart" element={<Cart/>} />
     </Routes>
     </>
   )
