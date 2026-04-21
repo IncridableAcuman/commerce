@@ -99,6 +99,8 @@ export const ProductProvider = ({
           setLoading,
           form,
           setForm,
+          imageFile,
+          setImageFile,
           handleEditSubmit
         }}
       >
