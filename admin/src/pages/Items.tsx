@@ -4,14 +4,21 @@ import { MoreVertical, Pencil, Trash2, X } from "lucide-react";
 import { UseProduct } from "../context/ProductProvider";
 
 const Items = () => {
-  const { handleDelete,products,openMenuId,setOpenMenuId } = UseProduct();
+  const {
+    handleDelete,
+    products,
+    openMenuId,
+    setOpenMenuId,
+    setEditProduct,
+    setImageFile,
+    editProduct,
+    closeEdit,
+    handleEditSubmit,
+    loading,
+  } = UseProduct();
 
-  const [editProduct, setEditProduct] = useState<IProduct | null>(null);
   const [form, setForm] = useState<Partial<IProduct>>({});
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
 
   // Tashqariga bosilganda dropdown yopilsin
   useEffect(() => {
@@ -31,9 +38,6 @@ const Items = () => {
     setImageFile(null);
     setOpenMenuId(null);
   };
-
-
-
 
   return (
     <div>
@@ -57,7 +61,11 @@ const Items = () => {
             <tr key={index} className="hover:bg-gray-50">
               <td className="p-3">{product.id}</td>
               <td className="p-3">
-                <img src={`http://localhost:8080${product?.image}`} alt="image" className="w-12 h-12 rounded-md" />
+                <img
+                  src={`http://localhost:8080${product?.image}`}
+                  alt="image"
+                  className="w-12 h-12 rounded-md"
+                />
               </td>
               <td className="p-3">{product.title}</td>
               <td className="p-3">{product.description.slice(0, 10)}...</td>
@@ -72,7 +80,7 @@ const Items = () => {
                   <button
                     onClick={() =>
                       setOpenMenuId(
-                        openMenuId === product.id ? null : product.id
+                        openMenuId === product.id ? null : product.id,
                       )
                     }
                     className="p-1 rounded hover:bg-gray-200"
@@ -211,9 +219,7 @@ const Items = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) =>
-                    setImageFile(e.target.files?.[0] ?? null)
-                  }
+                  onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
                   className="w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                 />
               </div>

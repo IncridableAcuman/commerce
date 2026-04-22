@@ -101,7 +101,10 @@ export const ProductProvider = ({
           setForm,
           imageFile,
           setImageFile,
-          handleEditSubmit
+          handleEditSubmit,
+          editProduct,
+          setEditProduct,
+          closeEdit
         }}
       >
         {children}
