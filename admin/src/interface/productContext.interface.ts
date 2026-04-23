@@ -18,4 +18,5 @@ export default interface ProductContextInterface {
     editProduct: ProductInterface | null;
     setEditProduct: (editProduct: ProductInterface | null) => void;
     closeEdit: () => void;
+    openEdit: (product: ProductInterface) => void;
 }

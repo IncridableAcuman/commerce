@@ -1,23 +1,24 @@
-import { useEffect, useState, useRef } from "react";
-import type IProduct from "../schema/product.schema";
-import { MoreVertical, Pencil, Trash2, X } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { UseProduct } from "../context/ProductProvider";
+import EditProductDialog from "../components/EditProductDialog";
 
 const Items = () => {
   const {
     handleDelete,
+    form,
+    setForm,
     products,
     openMenuId,
     setOpenMenuId,
-    setEditProduct,
     setImageFile,
     editProduct,
     closeEdit,
+    openEdit,
     handleEditSubmit,
     loading,
   } = UseProduct();
 
-  const [form, setForm] = useState<Partial<IProduct>>({});
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Tashqariga bosilganda dropdown yopilsin
@@ -31,13 +32,6 @@ const Items = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setOpenMenuId]);
 
-  // Edit modal ochish
-  const openEdit = (product: IProduct) => {
-    setEditProduct(product);
-    setForm({ ...product });
-    setImageFile(null);
-    setOpenMenuId(null);
-  };
 
   return (
     <div>
@@ -115,134 +109,14 @@ const Items = () => {
 
       {/* ===== EDIT DIALOG ===== */}
       {editProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Mahsulotni tahrirlash
-              </h2>
-              <button
-                onClick={closeEdit}
-                className="p-1 rounded hover:bg-gray-100 text-gray-500"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Form */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-xs text-gray-500 mb-1">Nomi</label>
-                <input
-                  type="text"
-                  value={form.title ?? ""}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <label className="block text-xs text-gray-500 mb-1">
-                  Tavsif
-                </label>
-                <textarea
-                  rows={3}
-                  value={form.description ?? ""}
-                  onChange={(e) =>
-                    setForm({ ...form, description: e.target.value })
-                  }
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Narx ($)
-                </label>
-                <input
-                  type="number"
-                  value={form.price ?? ""}
-                  onChange={(e) =>
-                    setForm({ ...form, price: Number(e.target.value) })
-                  }
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Kategoriya
-                </label>
-                <input
-                  type="text"
-                  value={form.category ?? ""}
-                  onChange={(e) =>
-                    setForm({ ...form, category: e.target.value as any })
-                  }
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  O'lcham
-                </label>
-                <input
-                  type="text"
-                  value={form.size ?? ""}
-                  onChange={(e) =>
-                    setForm({ ...form, size: e.target.value as any })
-                  }
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1">
-                  Status
-                </label>
-                <input
-                  type="text"
-                  value={form.status ?? ""}
-                  onChange={(e) =>
-                    setForm({ ...form, status: e.target.value as any })
-                  }
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <label className="block text-xs text-gray-500 mb-1">
-                  Rasm (yangilash uchun tanlang)
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-                  className="w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-                />
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="flex justify-end gap-2 mt-6">
-              <button
-                onClick={closeEdit}
-                className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
-              >
-                Bekor qilish
-              </button>
-              <button
-                onClick={handleEditSubmit}
-                disabled={loading}
-                className="px-5 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60"
-              >
-                {loading ? "Saqlanmoqda..." : "Saqlash"}
-              </button>
-            </div>
-          </div>
-        </div>
+        <EditProductDialog
+        loading={loading}
+        form={form}
+        setForm={setForm}
+        handleEditSubmit={handleEditSubmit}
+        setImageFile={setImageFile}
+        closeEdit={closeEdit}
+        />
       )}
     </div>
   );

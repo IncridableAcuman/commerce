@@ -25,6 +25,15 @@ export const ProductProvider = ({
     setImageFile(null);
   };
 
+    // Edit modal ochish
+  const openEdit = (product: ProductInterface) => {
+    setEditProduct(product);
+    setForm({ ...product });
+    setImageFile(null);
+    setOpenMenuId(null);
+  };
+  
+
   const handleDelete = async (id: number) => {
     setOpenMenuId(null);
     if (!confirm("Mahsulotni o'chirishni tasdiqlaysizmi?")) return;
@@ -104,7 +113,8 @@ export const ProductProvider = ({
           handleEditSubmit,
           editProduct,
           setEditProduct,
-          closeEdit
+          closeEdit,
+          openEdit
         }}
       >
         {children}
