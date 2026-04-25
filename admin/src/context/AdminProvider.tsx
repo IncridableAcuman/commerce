@@ -1,8 +1,16 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type AdminContextIinterface from "../interface/adminContext.interface";
 import type IUser from "../interface/userInterface";
 import adminAxiosInstance from "../api/axiosInstance";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import type { LoginForm } from "../../../client/src/schema/authForm";
 
 const AdminContext = createContext<AdminContextIinterface | null>(null);
 
@@ -11,7 +19,10 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const navigate = useNavigate();
   const [editData, setEditData] = useState({
     firstname: "",
     lastname: "",
@@ -20,7 +31,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     role: "",
   });
 
-    useEffect(() => {
+  useEffect(() => {
     const getUserList = async () => {
       try {
         const { data } = await adminAxiosInstance.get("/user/list");
@@ -86,6 +97,22 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const onSubmit = async (values: LoginForm) => {
+    setLoading(true);
+    try {
+      const { data } = await adminAxiosInstance.post("/auth/login", values);
+      localStorage.setItem("accessToken", data.accessToken);
+      toast.success("Successfully logged in");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      localStorage.removeItem("accessToken");
+      toast.error("Authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <AdminContext.Provider
@@ -101,9 +128,14 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
           setSelectedUser,
           editData,
           setEditData,
+          showPassword,
+          setShowPassword,
+          loading,
+          setLoading,
           handleDeleteUser,
           openEditModal,
-          handleEditSubmit
+          handleEditSubmit,
+          onSubmit
         }}
       >
         {children}

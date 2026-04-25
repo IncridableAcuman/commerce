@@ -1,3 +1,4 @@
+import type { LoginForm } from './../../../client/src/schema/authForm';
 import type { RefObject } from "react";
 import type IUser from "./userInterface";
 
@@ -12,6 +13,10 @@ interface EditDataType{
 export default interface AdminContextIinterface {
     users: IUser[];
     setUsers: (users: IUser[]) => void;
+    showPassword: boolean;
+    setShowPassword:(showPassword:boolean)=>void;
+    loading: boolean;
+    setLoading:(loading:boolean)=>boolean;
     openMenu: number | null;
     setOpenMenu: (openMenu: number | null) => void;
     isEditOpen:boolean;
@@ -24,4 +29,5 @@ export default interface AdminContextIinterface {
     handleDeleteUser:(id:number)=>void;
     openEditModal:(user:IUser)=>void;
     handleEditSubmit:()=>void;
+    onSubmit:(values:LoginForm)=>void;
 }

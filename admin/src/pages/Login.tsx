@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Lock, Mail, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import LoginSchema from "../schema/login.schema";
-import adminAxiosInstance from "../api/axiosInstance";
+import { UseAdminContext } from "../context/AdminProvider";
 
 type LoginForm = z.infer<typeof LoginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+const { onSubmit,showPassword,setShowPassword,loading } = UseAdminContext();
 
   const {
     register,
@@ -24,21 +22,6 @@ const Login = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (values: LoginForm) => {
-    setLoading(true);
-    try {
-      const { data } = await adminAxiosInstance.post("/auth/login", values);
-      localStorage.setItem("accessToken", data.accessToken);
-      toast.success("Successfully logged in");
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      localStorage.removeItem("accessToken");
-      toast.error("Authentication failed");
-    } finally {
-      setLoading(false);
-    }
-  };
 
     useEffect(()=>{
       const token = localStorage.getItem("accessToken");
@@ -118,7 +101,7 @@ const Login = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword((p) => !p)}
+                  onClick={() => setShowPassword((p: unknown) => !p)}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
