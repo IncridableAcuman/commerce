@@ -10,8 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.20.0",
+    "framer-motion": "^13.4.4",
+    "lucide-react": "^1.48.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-hook-form": "^7.88.0",
+    "react-router-dom": "^7.18.4",
+    "react-toastify": "^11.1.0",
+    "swiper": "^14.2.0",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
