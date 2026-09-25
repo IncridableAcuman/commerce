@@ -24,6 +24,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final PasswordEncoder passwordEncoder;
+    private final EmailTemplateService emailTemplateService;
 
     public UserEntity findUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow(CustomNotFoundException::new);
@@ -37,6 +38,8 @@ public class AuthService {
     }
     public AuthDto.AuthResponse login(AuthDto.LoginRequest request,HttpServletResponse response){
         UserEntity user = findUserByEmail(request.getEmail());
+        if (!user.isEnabled()){
+            throw new CustomBadRequestException("Account does not active. Check your email!");}
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new CustomBadRequestException("Password mismatch");}
         return authResponse(user,response);
@@ -52,12 +55,18 @@ public class AuthService {
         return user;
     }
     public void logout(String refreshToken,HttpServletResponse response){
-        UserEntity user = validateTokenAndGetUserFromToken(refreshToken);
+        UserEntity user = validateTokenAUserndGetUserFromToken(refreshToken);
         tokenService.deleteToken(user);
         cookieUtil.clearCookie(response);
     }
     public AuthDto.AuthResponse refresh(String refreshToken,HttpServletResponse response){
         UserEntity user = validateTokenAndGetUserFromToken(refreshToken);
         return authResponse(user,response);
+    }
+    public void forgotPassword(AuthDto.ForgotPasswordRequest request){
+
+    }
+    public void resetPassword(AuthDto.ResetPasswordRequest request){
+
     }
 }
