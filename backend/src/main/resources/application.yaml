@@ -1,0 +1,55 @@
+server:
+  port: ${PORT}
+  context:
+    path: /api/v1
+
+spring:
+  application:
+    name: backend
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        format-sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  redis:
+    host: ${REDIS_HOST}
+    port: 6379
+  data:
+    rabbitmq:
+      host: ${RABBITMQ_HOST}
+      port: 5672
+  servlet:
+    multipart:
+      max-file-size: 5MB;
+      max-request-size: 5MB
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  refresh_time: ${JWT_REFRESH}
+  access_time: ${JWT_ACCESS}
+
+file:
+  upload:
+    dir: ${UPLOAD_DIR}
+
+client:
+  url: ${CLIENT_URL}
