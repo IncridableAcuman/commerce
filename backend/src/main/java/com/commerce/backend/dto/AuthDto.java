@@ -54,6 +54,21 @@ public class AuthDto {
         @Size(min = 8,max = 50,message = "Confirm password must be between 8 and 50 characters")
         private String confirmPassword;
     }
+    @Data
+    public static class ResendOtpCodeRequest {
+        @NotBlank(message = "Email is required")
+        @Email(message = "Invalid email format")
+        private String email;
+    }
+    @Data
+    public static class VerifyEmailRequest {
+        @NotBlank(message = "Email is required")
+        @Email(message = "Invalid email format")
+        private String email;
+
+        @NotBlank(message = "Otp is required")
+        private String otp;
+    }
     public record AuthResponse(String accessToken){
         public static AuthResponse form(String accessToken){
             return new AuthResponse(accessToken);

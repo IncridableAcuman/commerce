@@ -1,5 +1,6 @@
 package com.commerce.backend.service;
 
+import com.commerce.backend.constants.Messages;
 import com.commerce.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -16,6 +17,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        return userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(Messages.NOT_FOUND));
     }
 }
