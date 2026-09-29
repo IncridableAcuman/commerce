@@ -1,7 +1,6 @@
 package com.commerce.backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,10 +10,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${file.upload.dir}")
     private String uploadDir;
 
-    @Bean
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
+        String location = uploadDir.endsWith("/") ? "file:" + uploadDir : "file:" + uploadDir + "/";
         registry
-                .addResourceHandler()
-                .addResourceLocations("file:" + uploadDir);
+                .addResourceHandler("/uploads/**")
+                .addResourceLocations(location);
     }
 }

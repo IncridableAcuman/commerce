@@ -4,6 +4,10 @@ server:
     path: /api/v1
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
   application:
     name: backend
   datasource:
@@ -36,10 +40,6 @@ spring:
     rabbitmq:
       host: ${RABBITMQ_HOST}
       port: 5672
-  servlet:
-    multipart:
-      max-file-size: 5MB;
-      max-request-size: 5MB
 
 
 jwt:

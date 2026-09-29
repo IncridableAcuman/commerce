@@ -41,7 +41,7 @@ public class UserEntity implements UserDetails {
     private String avatar;
 
     @Column(name = "enabled")
-    private boolean enabled=false;
+    private boolean enabled;
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {
