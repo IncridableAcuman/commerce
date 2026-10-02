@@ -59,6 +59,7 @@ public class AuthService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
+        sendOtpCode(user);
     }
     public void sendOtpCode(UserEntity user){
         String otp = String.format("%4d",new Random().nextInt(100000));
