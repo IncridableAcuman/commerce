@@ -35,8 +35,12 @@ public class ProductEntity {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
-    @PostUpdate
+    @PreUpdate
     public void productUpdate(){
         updatedAt = LocalDateTime.now();
     }
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private ProductCategoryEntity category;
 }

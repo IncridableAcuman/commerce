@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "product_categories")
@@ -24,7 +25,6 @@ public class ProductCategoryEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    private List<ProductEntity> products;
 }
