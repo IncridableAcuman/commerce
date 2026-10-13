@@ -3,7 +3,7 @@ package com.commerce.backend.service;
 import com.commerce.backend.constants.Messages;
 import com.commerce.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,5 +52,16 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@Valid @RequestBody AuthDto.ResetPasswordRequest request){
         authService.resetPassword(request);
         return ResponseEntity.ok(Messages.UPDATE_PASSWORD);
+    }
+    @GetMapping("/me")
+    public ResponseEntity<AuthDto.UserResponse> getMe(Authentication authentication){
+        if (authentication == null || authentication.getName() == null){
+            throw new com.commerce.backend.exception.CustomUnauthorizedException(Messages.INVALID_OR_EXPIRED_TOKEN);
+        }
+        return ResponseEntity.ok(authService.getCurrentUser(authentication.getName()));
+    }
+    @PostMapping("/google")
+    public ResponseEntity<AuthDto.AuthResponse> googleLogin(@Valid @RequestBody AuthDto.GoogleAuthRequest request, HttpServletResponse response){
+        return ResponseEntity.ok(authService.loginWithGoogleToken(request, response));
     }
 }

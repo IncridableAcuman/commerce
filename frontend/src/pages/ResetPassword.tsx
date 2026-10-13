@@ -1,8 +1,15 @@
-import { Lock, Eye, EyeOff, ArrowLeft, ArrowRight, KeyRound, ShoppingBag, ShieldCheck, Truck, Headphones, CheckCircle2 } from "lucide-react";
+import { Lock, Eye, EyeOff, ArrowLeft, ArrowRight, KeyRound, ShoppingBag, ShieldCheck, Truck, Headphones, CheckCircle2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
+import { useAuthStore } from "../stores/authStore";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token") || "";
+  const { resetPassword, isLoading } = useAuthStore();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -10,9 +17,18 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password && password === confirmPassword) {
+    if (!token) {
+      toast.error("Tiklash tokeni topilmadi. Iltimos pochtadagi havolani qayta oching.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Parollar bir-biriga mos kelmadi!");
+      return;
+    }
+    const success = await resetPassword({ token, password, confirmPassword });
+    if (success) {
       setIsSuccess(true);
     }
   };
@@ -150,13 +166,21 @@ const ResetPassword = () => {
                     </div>
                   </div>
 
+                  {!token && (
+                    <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>Xatolik: Tiklash tokeni topilmadi. Havolani pochtangizdan qayta oching.</span>
+                    </div>
+                  )}
+
                   <motion.button
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full mt-2 bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all duration-300 cursor-pointer"
+                    disabled={isLoading || !token}
+                    className="w-full mt-2 bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all duration-300 cursor-pointer disabled:opacity-50"
                   >
-                    <span>Parolni saqlash</span>
+                    <span>{isLoading ? "Saqlanmoqda..." : "Parolni saqlash"}</span>
                     <ArrowRight className="w-4 h-4" />
                   </motion.button>
                 </form>

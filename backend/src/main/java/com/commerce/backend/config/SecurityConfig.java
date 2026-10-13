@@ -16,21 +16,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http){
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors-> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth-> auth
-                                .requestMatchers("/auth/**","/file/**","/uploads/**").permitAll()
+                                .requestMatchers(
+                                        "/auth/**",
+                                        "/file/**",
+                                        "/uploads/**",
+                                        "/oauth2/**",
+                                        "/login/oauth2/**",
+                                        "/actuator/**"
+                                ).permitAll()
                                 .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

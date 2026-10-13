@@ -6,13 +6,23 @@ export const api: AxiosInstance = axios.create({
     timeout: 10000,
 });
 
-// Request Interceptor: Auth yo'nalishlariga eskirgan tokenni biriktirmaslik
+// Request Interceptor: Ochiq auth yo'nalishlariga tokenni majburan qo'shmaslik, lekin /auth/me uchun qo'shish
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const isAuthRoute = config.url?.includes('/auth/');
+        const publicAuthRoutes = [
+            '/auth/login',
+            '/auth/register',
+            '/auth/verify-email',
+            '/auth/resend-otp',
+            '/auth/forgot-password',
+            '/auth/reset-password',
+            '/auth/refresh',
+            '/auth/google'
+        ];
+        const isPublicAuthRoute = publicAuthRoutes.some(route => config.url?.endsWith(route));
         const token = localStorage.getItem("accessToken");
 
-        if (token && !isAuthRoute) {
+        if (token && !isPublicAuthRoute) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;

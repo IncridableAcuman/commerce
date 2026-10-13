@@ -1,15 +1,14 @@
 server:
-  port: ${PORT}
-  context:
-    path: /api/v1
+  port: ${PORT:8080}
+  servlet:
+    context-path: /api/v1
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 spring:
   config:
     import: "optional:file:.env[.properties]"
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
   application:
     name: backend
   datasource:
@@ -27,8 +26,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -36,12 +35,24 @@ spring:
           starttls:
             enable: true
   redis:
-    host: ${REDIS_HOST}
+    host: ${REDIS_HOST:localhost}
     port: 6379
   data:
     rabbitmq:
-      host: ${RABBITMQ_HOST}
+      host: ${RABBITMQ_HOST:localhost}
       port: 5672
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:google-client-secret}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
 
 jwt:
@@ -51,7 +62,18 @@ jwt:
 
 file:
   upload:
-    dir: ${UPLOAD_DIR}
+    dir: ${UPLOAD_DIR:./uploads}
 
 client:
-  url: ${CLIENT_URL}
+  url: ${CLIENT_URL:http://localhost:5173}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true

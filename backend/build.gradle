@@ -19,25 +19,24 @@ repositories {
 
 dependencies {
 	// Core & Web Starters
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc' // 'spring-boot-starter-web' bilan bir xil
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// Database & Cache
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-session-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	runtimeOnly 'org.postgresql:postgresql'
 
 	// Security & OAuth2
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 	// Messaging (RabbitMQ)
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
 	// Utilities & Configuration
-	implementation 'org.springframework.boot:spring-boot-starter-restclient' // Spring Boot 3.4+ uchun rasmiy starter
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
 	// JWT (JSON Web Token) - Yangi versiyalarga mos keluvchi 0.12.x seriyasi tavsiya etiladi
@@ -49,6 +48,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// Monitoring & Health Check (Production Ready)
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 	// DevTools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -57,8 +59,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// Alohida maxsus test paketlari
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-	testImplementation 'org.springframework.test.rabbitmq:spring-rabbit-test' // AMQP test uchun to'g'ri nomi
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
@@ -67,4 +69,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('jar') {
+	enabled = false
+}
+
+tasks.named('bootJar') {
+	archiveFileName = 'app.jar'
 }

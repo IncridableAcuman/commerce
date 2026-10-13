@@ -10,11 +10,14 @@ import {
   LogOut, 
   Settings, 
   Package, 
-  ShoppingBasket 
+  ShoppingBasket,
+  LogIn 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuthStore } from '../stores/authStore';
 
 const Navbar = () => {
+  const { user, isAuthenticated, logout } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -131,58 +134,83 @@ const Navbar = () => {
             </span>
           </a>
 
-          {/* Foydalanuvchi profili Dropdown menyusi */}
-          <div className="relative" ref={profileRef}>
-            <button
-              onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-              className="flex items-center gap-2 p-1.5 pl-2 bg-slate-800/60 border border-slate-700/60 rounded-xl hover:border-indigo-500/50 transition-all cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">
-                <User className="w-4 h-4" />
-              </div>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isProfileDropdownOpen ? "rotate-180" : ""}`} />
-            </button>
-
-            <AnimatePresence>
-              {isProfileDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 overflow-hidden py-2 z-50"
-                >
-                  <div className="px-4 py-2 border-b border-slate-800 mb-1">
-                    <p className="text-xs text-slate-400">Xush kelibsiz,</p>
-                    <p className="text-sm font-semibold text-white truncate">Izzatbek</p>
+          {/* Foydalanuvchi profili yoki Kirish tugmasi */}
+          {isAuthenticated ? (
+            <div className="relative" ref={profileRef}>
+              <button
+                onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                className="flex items-center gap-2 p-1.5 pl-2 bg-slate-800/60 border border-slate-700/60 rounded-xl hover:border-indigo-500/50 transition-all cursor-pointer"
+              >
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.fullName || "User"}
+                    className="w-8 h-8 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">
+                    {user?.fullName ? user.fullName[0].toUpperCase() : <User className="w-4 h-4" />}
                   </div>
+                )}
+                <span className="hidden sm:inline text-xs font-medium text-slate-300 max-w-[100px] truncate">
+                  {user?.fullName || user?.username || "Profil"}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isProfileDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
 
-                  <a href="/profile" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
-                    <User className="w-4 h-4 text-indigo-400" />
-                    <span>Profil</span>
-                  </a>
-                  <a href="/orders" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
-                    <Package className="w-4 h-4 text-sky-400" />
-                    <span>Buyurtmalarim</span>
-                  </a>
-                  <a href="/settings" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
-                    <Settings className="w-4 h-4 text-purple-400" />
-                    <span>Sozlamalar</span>
-                  </a>
-
-                  <div className="border-t border-slate-800 my-1" />
-
-                  <button 
-                    onClick={() => console.log("Logout")}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+              <AnimatePresence>
+                {isProfileDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 overflow-hidden py-2 z-50"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Chiqish</span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                    <div className="px-4 py-2 border-b border-slate-800 mb-1">
+                      <p className="text-xs text-slate-400">Xush kelibsiz,</p>
+                      <p className="text-sm font-semibold text-white truncate">{user?.fullName || user?.username || "Foydalanuvchi"}</p>
+                      <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
+                    </div>
+
+                    <a href="/profile" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
+                      <User className="w-4 h-4 text-indigo-400" />
+                      <span>Profil</span>
+                    </a>
+                    <a href="/orders" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
+                      <Package className="w-4 h-4 text-sky-400" />
+                      <span>Buyurtmalarim</span>
+                    </a>
+                    <a href="/settings" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors">
+                      <Settings className="w-4 h-4 text-purple-400" />
+                      <span>Sozlamalar</span>
+                    </a>
+
+                    <div className="border-t border-slate-800 my-1" />
+
+                    <button 
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        logout();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Chiqish</span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <a
+              href="/auth"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-sm font-medium transition-all shadow-md shadow-indigo-500/20"
+            >
+              <LogIn className="w-4 h-4" />
+              <span>Kirish</span>
+            </a>
+          )}
 
           {/* Mobil menyu tugmasi */}
           <button
@@ -226,6 +254,38 @@ const Navbar = () => {
                   {cat.name}
                 </a>
               ))}
+            </div>
+
+            {/* Mobil foydalanuvchi holati */}
+            <div className="pt-3 border-t border-slate-800">
+              {isAuthenticated ? (
+                <div className="space-y-2">
+                  <div className="px-3 py-1">
+                    <p className="text-xs text-slate-400">Tizimga kirgan:</p>
+                    <p className="text-sm font-semibold text-white">{user?.fullName || user?.username}</p>
+                    <p className="text-xs text-slate-400">{user?.email}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      logout();
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Chiqish</span>
+                  </button>
+                </div>
+              ) : (
+                <a
+                  href="/auth"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-linear-to-r from-indigo-500 to-purple-600 text-white text-sm font-medium"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Kirish / Ro'yxatdan o'tish</span>
+                </a>
+              )}
             </div>
           </motion.div>
         )}

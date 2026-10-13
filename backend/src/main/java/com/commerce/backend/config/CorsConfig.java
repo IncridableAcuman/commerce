@@ -11,7 +11,7 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
-    @Value("{client.url}")
+    @Value("${client.url:http://localhost:5173}")
     private String clientUrl;
 
     @Bean

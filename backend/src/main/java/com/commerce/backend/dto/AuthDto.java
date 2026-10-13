@@ -76,9 +76,42 @@ public class AuthDto {
         private String otp;
     }
 
-    public record AuthResponse(String accessToken) {
+    @Data
+    public static class GoogleAuthRequest {
+        @NotBlank(message = "Token bo'sh bo'lishi mumkin emas")
+        private String token;
+    }
+
+    public record UserResponse(
+            Long id,
+            String fullName,
+            String username,
+            String email,
+            String role,
+            String avatar,
+            boolean enabled
+    ) {
+        public static UserResponse from(com.commerce.backend.entity.UserEntity user) {
+            if (user == null) return null;
+            return new UserResponse(
+                    user.getId(),
+                    user.getFullName(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getRole() != null ? user.getRole().name() : null,
+                    user.getAvatar(),
+                    user.isEnabled()
+            );
+        }
+    }
+
+    public record AuthResponse(String accessToken, UserResponse user) {
+        public static AuthResponse form(String accessToken, com.commerce.backend.entity.UserEntity user) {
+            return new AuthResponse(accessToken, UserResponse.from(user));
+        }
+
         public static AuthResponse form(String accessToken) {
-            return new AuthResponse(accessToken);
+            return new AuthResponse(accessToken, null);
         }
     }
 }

@@ -3,7 +3,7 @@ package com.commerce.backend.entity;
 import com.commerce.backend.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.jspecify.annotations.NonNull;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

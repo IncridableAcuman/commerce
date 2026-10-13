@@ -1,14 +1,14 @@
 import { Mail, ArrowLeft, ArrowRight, ShieldAlert, CheckCircle2, ShoppingBag, ShieldCheck, Truck, Headphones } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { UseAuth } from "../contexts/AuthProvider";
+import { useAuthStore } from "../stores/authStore";
 import { useForm } from "react-hook-form";
 import type { ForgotPasswordData } from "../schemas/auth.schema";
 import { forgotPasswordSchema } from "../schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const ForgotPassword = () => {
-  const { forgotPassword, loading } = UseAuth();
+  const { forgotPassword, isLoading } = useAuthStore();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
 
@@ -127,10 +127,10 @@ const ForgotPassword = () => {
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    disabled={loading}
+                    disabled={isLoading}
                     className="w-full mt-2 bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all duration-300 cursor-pointer disabled:opacity-50"
                   >
-                    <span>{loading ? "Yuborilmoqda..." : "Tiklash havolasini yuborish"}</span>
+                    <span>{isLoading ? "Yuborilmoqda..." : "Tiklash havolasini yuborish"}</span>
                     <ArrowRight className="w-4 h-4" />
                   </motion.button>
                 </form>

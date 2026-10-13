@@ -27,6 +27,14 @@ public class CookieUtil {
         cookieManagement(refreshToken,refreshTime/1000,response);
     }
     public void clearCookie(HttpServletResponse response){
-        cookieManagement(null,0,response);
+        ResponseCookie cookie = ResponseCookie
+                .from("refreshToken", "")
+                .maxAge(0)
+                .path("/")
+                .httpOnly(true)
+                .sameSite("Lax")
+                .secure(false)
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 }

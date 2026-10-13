@@ -23,7 +23,7 @@ public class MailUtil {
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setTo(payload.to());
             helper.setSubject(payload.subject());
-            helper.setText(payload.text());
+            helper.setText(payload.text(),true);
             // sending
             mailSender.send(message);
         } catch (MessagingException e){
