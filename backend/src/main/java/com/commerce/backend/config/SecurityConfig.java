@@ -34,9 +34,13 @@ public class SecurityConfig {
                                         "/login/oauth2/**",
                                         "/actuator/**"
                                 ).permitAll()
+                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/products/**").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2AuthenticationSuccessHandler)
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new org.springframework.security.web.authentication.HttpStatusEntryPoint(org.springframework.http.HttpStatus.UNAUTHORIZED))
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

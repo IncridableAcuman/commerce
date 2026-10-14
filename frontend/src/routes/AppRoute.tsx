@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "../pages/Home";
+import ProductDetail from "../pages/ProductDetail";
 import Auth from "../pages/Auth";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
@@ -22,6 +23,7 @@ const AppRoute = () => {
       <ToastContainer position="top-right" autoClose={3000} theme="dark" />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/auth/callback" element={<OAuthCallback />} />
         <Route path="/verify-email" element={<VerifyEmail />} />

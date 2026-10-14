@@ -14,36 +14,43 @@ import java.util.UUID;
 
 @Service
 public class FileService {
-    @Value("file.upload.dir")
+
+    @Value("${file.upload.dir:./uploads}")
     private String uploadDir;
 
-    public String saveFile(MultipartFile file){
+    public String saveFile(MultipartFile file) {
         try {
-            if (file == null || file.isEmpty()){
-                throw new CustomBadRequestException("File is null or empty");}
+            if (file == null || file.isEmpty()) {
+                throw new CustomBadRequestException("File is null or empty");
+            }
             Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)){
-                Files.createDirectories(uploadPath);}
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             String originalName = file.getOriginalFilename();
-            String extension = ".";
-            if (originalName != null){
-                extension = originalName.substring(originalName.indexOf("."));
+            String extension = ".jpg";
+            if (originalName != null && originalName.contains(".")) {
+                extension = originalName.substring(originalName.lastIndexOf("."));
             }
             String fileName = UUID.randomUUID() + extension;
             Path path = uploadPath.resolve(fileName);
-            Files.copy(file.getInputStream(),path);
+            Files.copy(file.getInputStream(), path);
             return fileName;
-        } catch (Exception e){
+        } catch (CustomBadRequestException e) {
+            throw e;
+        } catch (Exception e) {
             throw new CustomInternalServerException();
         }
     }
-    public void removeFile(String filename){
-        if (filename == null || filename.isEmpty()){
-            throw new CustomBadRequestException("Filename is null or empty");}
+
+    public void removeFile(String filename) {
+        if (filename == null || filename.isEmpty()) {
+            throw new CustomBadRequestException("Filename is null or empty");
+        }
         try {
-            Path path = Paths.get(uploadDir,filename);
+            Path path = Paths.get(uploadDir, filename);
             Files.deleteIfExists(path);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new CustomInternalServerException();
         }
     }
