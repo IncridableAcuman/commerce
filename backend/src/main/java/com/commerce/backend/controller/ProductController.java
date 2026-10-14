@@ -30,6 +30,7 @@ public class ProductController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Boolean inStock,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -39,7 +40,7 @@ public class ProductController {
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<ProductResponse> products = productService.getAllProducts(categoryId, search, minPrice, maxPrice, pageable);
+        Page<ProductResponse> products = productService.getAllProducts(categoryId, search, minPrice, maxPrice, inStock, pageable);
         return ResponseEntity.ok(products);
     }
 
@@ -49,12 +50,14 @@ public class ProductController {
     }
 
     @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
         ProductResponse response = productService.createProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ProductResponse> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequest request
@@ -63,15 +66,25 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/upload-image")
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Map<String, String>> uploadProductImage(@RequestParam("file") MultipartFile file) {
         String fileName = fileService.saveFile(file);
         String imageUrl = "/api/v1/uploads/" + fileName;
         return ResponseEntity.ok(Map.of("fileName", fileName, "imageUrl", imageUrl));
     }
+
+    @PostMapping("/reindex")
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Map<String, Object>> reindexAll() {
+        int count = productService.reindexAll();
+        return ResponseEntity.ok(Map.of("message", "Elasticsearch muvaffaqiyatli qayta indekslandi", "indexedCount", count));
+    }
 }
+

@@ -34,5 +34,11 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
+.vclass Number(int):
+      def __new__(cls,x):
+          super().__new__(cls,x)
+
+      def digits_sum(self):
+          return sum(int(digit) for digit in str(self.real))scode/
 .env
+logs

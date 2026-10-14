@@ -40,8 +40,22 @@ public class UserEntity implements UserDetails {
     @Column(name = "avatar")
     private String avatar;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "enabled")
     private boolean enabled;
+
+    @org.hibernate.annotations.CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private java.time.LocalDateTime createdAt;
+
+    @org.hibernate.annotations.UpdateTimestamp
+    @Column(name = "updated_at")
+    private java.time.LocalDateTime updatedAt;
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {

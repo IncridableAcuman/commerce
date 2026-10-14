@@ -19,10 +19,55 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final com.commerce.backend.elasticsearch.service.ProductSearchService productSearchService;
+
+    public ProductService(
+            ProductRepository productRepository,
+            ProductCategoryRepository productCategoryRepository,
+            @org.springframework.beans.factory.annotation.Autowired(required = false)
+            com.commerce.backend.elasticsearch.service.ProductSearchService productSearchService
+    ) {
+        this.productRepository = productRepository;
+        this.productCategoryRepository = productCategoryRepository;
+        this.productSearchService = productSearchService;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> getAllProducts(
+            Long categoryId,
+            String search,
+            Double minPrice,
+            Double maxPrice,
+            Boolean inStock,
+            Pageable pageable
+    ) {
+        String cleanSearch = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
+
+        // 1. Elasticsearch orqali qidiruv (mavjud bo'lsa)
+        if (productSearchService != null) {
+            Page<ProductResponse> esResult = productSearchService.searchProducts(
+                    categoryId, cleanSearch, minPrice, maxPrice, inStock, pageable
+            );
+            if (esResult != null) {
+                return esResult;
+            }
+        }
+
+        // 2. Elasticsearch ishlamagan holda PostgreSQL ga avtomatik fallback
+        log.info("PostgreSQL findWithFilters orqali qidirilmoqda (Elasticsearch fallback)");
+        Page<ProductEntity> products = productRepository.findWithFilters(
+                categoryId,
+                cleanSearch,
+                minPrice,
+                maxPrice,
+                inStock,
+                pageable
+        );
+        return products.map(ProductResponse::from);
+    }
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> getAllProducts(
@@ -32,15 +77,7 @@ public class ProductService {
             Double maxPrice,
             Pageable pageable
     ) {
-        String cleanSearch = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
-        Page<ProductEntity> products = productRepository.findWithFilters(
-                categoryId,
-                cleanSearch,
-                minPrice,
-                maxPrice,
-                pageable
-        );
-        return products.map(ProductResponse::from);
+        return getAllProducts(categoryId, search, minPrice, maxPrice, false, pageable);
     }
 
     @Transactional(readOnly = true)
@@ -69,6 +106,10 @@ public class ProductService {
                 .build();
 
         ProductEntity saved = productRepository.save(product);
+        if (productSearchService != null) {
+            productSearchService.indexProduct(saved);
+        }
+        log.info("Yangi mahsulot yaratildi va indekslandi: ID={}, Title='{}'", saved.getId(), saved.getTitle());
         return ProductResponse.from(saved);
     }
 
@@ -99,6 +140,10 @@ public class ProductService {
         }
 
         ProductEntity updated = productRepository.save(product);
+        if (productSearchService != null) {
+            productSearchService.indexProduct(updated);
+        }
+        log.info("Mahsulot yangilandi va qayta indekslandi: ID={}", updated.getId());
         return ProductResponse.from(updated);
     }
 
@@ -108,6 +153,21 @@ public class ProductService {
             throw new CustomNotFoundException("Mahsulot topilmadi (ID: " + id + ")");
         }
         productRepository.deleteById(id);
+        if (productSearchService != null) {
+            productSearchService.deleteProductIndex(id);
+        }
+        log.info("Mahsulot o'chirildi (ID: {})", id);
+    }
+
+    @Transactional(readOnly = true)
+    public int reindexAll() {
+        if (productSearchService == null) {
+            log.warn("Elasticsearch xizmati faol emas, qayta indekslash o'tkazib yuborildi");
+            return 0;
+        }
+        List<ProductEntity> allProducts = productRepository.findAll();
+        log.info("Barcha mahsulotlarni Elasticsearch ga indekslash boshlandi (Jami: {})", allProducts.size());
+        return productSearchService.reindexAll(allProducts);
     }
 
     @PostConstruct
@@ -217,7 +277,10 @@ public class ProductService {
                                     .build()
                     );
                     productRepository.saveAll(demoProducts);
-                    log.info("Boshlang'ich mahsulotlar muvaffaqiyatli saqlandi!");
+                    if (productSearchService != null) {
+                        productSearchService.reindexAll(demoProducts);
+                    }
+                    log.info("Boshlang'ich mahsulotlar muvaffaqiyatli saqlandi va indekslandi!");
                 }
             }
         } catch (Exception e) {

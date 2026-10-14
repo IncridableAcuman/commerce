@@ -18,16 +18,25 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
             "(:categoryId IS NULL OR (p.category IS NOT NULL AND p.category.id = :categoryId)) AND " +
             "(:search IS NULL OR :search = '' OR LOWER(p.title) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(p.content) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
             "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR p.price <= :maxPrice)")
+            "(:maxPrice IS NULL OR p.price <= :maxPrice) AND " +
+            "(:inStock IS NULL OR :inStock = false OR p.stock > 0)")
     Page<ProductEntity> findWithFilters(
             @Param("categoryId") Long categoryId,
             @Param("search") String search,
             @Param("minPrice") Double minPrice,
             @Param("maxPrice") Double maxPrice,
+            @Param("inStock") Boolean inStock,
             Pageable pageable
     );
 
     Page<ProductEntity> findByCategoryId(Long categoryId, Pageable pageable);
 
     List<ProductEntity> findTop8ByOrderByCreatedAtDesc();
+
+    long countByStockLessThanEqualAndStockGreaterThan(int max, int min);
+
+    long countByStockEquals(int stock);
+
+    List<ProductEntity> findTop10ByStockLessThanEqualOrderByStockAsc(int max);
 }
+

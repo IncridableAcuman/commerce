@@ -6,13 +6,13 @@ import {
   Minus, 
   Plus, 
   ArrowRight, 
-  ShieldCheck,
-  PackageCheck
+  ShieldCheck
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../stores/cartStore";
-import { toast } from "react-toastify";
 
 export const CartDrawer = () => {
+  const navigate = useNavigate();
   const { 
     items, 
     isCartOpen, 
@@ -33,12 +33,8 @@ export const CartDrawer = () => {
   }).format(subtotal);
 
   const handleCheckout = () => {
-    toast.success("Buyurtmangiz qabul qilindi! Tez orada operatorlarimiz bog'lanishadi.", {
-      icon: <PackageCheck className="w-5 h-5 text-emerald-400" />,
-      autoClose: 4000,
-    });
-    clearCart();
     closeCart();
+    navigate("/checkout");
   };
 
   return (
@@ -54,7 +50,7 @@ export const CartDrawer = () => {
             className="absolute inset-0 bg-slate-950/80 backdrop-blur-xs transition-opacity"
           />
 
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
             {/* O'ng panel */}
             <motion.div
               initial={{ x: "100%" }}
@@ -64,7 +60,7 @@ export const CartDrawer = () => {
               className="w-screen max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col"
             >
               {/* Header */}
-              <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
                     <ShoppingBag className="w-5 h-5 text-indigo-400" />
@@ -84,7 +80,7 @@ export const CartDrawer = () => {
               </div>
 
               {/* Savat ichidagi mahsulotlar ro'yxati */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4">
                 {items.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center py-12 space-y-4">
                     <div className="w-20 h-20 rounded-3xl bg-slate-800/60 border border-slate-800 flex items-center justify-center text-slate-500">
@@ -183,7 +179,7 @@ export const CartDrawer = () => {
 
               {/* Footer va Checkout */}
               {items.length > 0 && (
-                <div className="p-6 border-t border-slate-800 bg-slate-900/95 space-y-4">
+                <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-900/95 space-y-3 sm:space-y-4">
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between text-slate-400">
                       <span>Mahsulotlar qiymati</span>

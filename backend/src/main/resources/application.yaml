@@ -41,6 +41,11 @@ spring:
     rabbitmq:
       host: ${RABBITMQ_HOST:localhost}
       port: 5672
+    elasticsearch:
+      repositories:
+        enabled: ${ELASTICSEARCH_ENABLED:false}
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
   security:
     oauth2:
       client:

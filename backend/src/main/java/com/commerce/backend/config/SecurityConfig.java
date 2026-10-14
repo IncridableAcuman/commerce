@@ -3,6 +3,7 @@ package com.commerce.backend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CorsConfig corsConfig;
@@ -35,7 +37,19 @@ public class SecurityConfig {
                                         "/actuator/**"
                                 ).permitAll()
                                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/products/**").permitAll()
+                                .requestMatchers(org.springframework.http.HttpMethod.POST, "/products/upload-image").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers(org.springframework.http.HttpMethod.POST, "/products/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers(org.springframework.http.HttpMethod.PUT, "/products/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/products/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers("/admin/users/**").hasRole("ADMIN")
+                                .requestMatchers("/admin/analytics/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers("/orders/admin/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers(org.springframework.http.HttpMethod.POST, "/orders").permitAll()
+                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/orders/track/**").permitAll()
+                                .requestMatchers("/orders/**").authenticated()
+                                .requestMatchers("/users/**").authenticated()
                                 .anyRequest().authenticated())
+
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                 )

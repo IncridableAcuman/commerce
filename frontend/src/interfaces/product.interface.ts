@@ -40,6 +40,7 @@ export interface ProductFilterParams {
   search?: string;
   minPrice?: number | null;
   maxPrice?: number | null;
+  inStock?: boolean | null;
   page?: number;
   size?: number;
   sortBy?: string;

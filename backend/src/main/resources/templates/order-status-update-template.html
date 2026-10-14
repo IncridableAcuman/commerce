@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uz" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyurtma holati yangilandi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #0f172a;
+            padding: 30px 15px;
+        }
+        .main-card {
+            background-color: #ffffff;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            padding: 34px 28px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header-cancelled {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
+        }
+        .header-delivered {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
+        }
+        .header-shipped {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%) !important;
+        }
+        .brand-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            margin: 0 0 6px 0;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .header p {
+            margin: 0;
+            font-size: 13px;
+            color: #e0e7ff;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 32px 28px;
+        }
+        .status-hero-box {
+            text-align: center;
+            background-color: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 26px;
+        }
+        .status-hero-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .status-hero-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        .status-hero-desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .details-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+        }
+        .details-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .details-row:last-child {
+            margin-bottom: 0;
+        }
+        .details-label {
+            display: table-cell;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .details-value {
+            display: table-cell;
+            color: #0f172a;
+            font-weight: 700;
+            text-align: right;
+        }
+        .cta-container {
+            text-align: center;
+            margin: 28px 0 10px 0;
+        }
+        .btn-track {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 13px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .footer {
+            background-color: #0f172a;
+            padding: 22px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <table class="main-card" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+            <td class="header" 
+                th:classappend="${statusName == 'CANCELLED' ? 'header-cancelled' : (statusName == 'DELIVERED' ? 'header-delivered' : (statusName == 'SHIPPED' ? 'header-shipped' : ''))}">
+                <div class="brand-badge">ShopLuxe Commerce</div>
+                <h1>Buyurtma holati o'zgardi</h1>
+                <p>Buyurtma raqami: <strong th:text="${orderNumber}">#ORD-0000</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="content">
+                <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">
+                    Assalomu alaykum, <span th:text="${customerName}">Hurmatli mijoz</span>!
+                </div>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin: 0 0 20px 0;">
+                    Sizning <strong th:text="${orderNumber}">#ORD-0000</strong> raqamli buyurtmangiz bo'yicha yangi ma'lumot mavjud.
+                </p>
+
+                <!-- Status Hero Box -->
+                <div class="status-hero-box">
+                    <div class="status-hero-title">Yangi holat:</div>
+                    <div class="status-hero-value" th:text="${orderStatusText}">Yetkazib berilmoqda</div>
+                    <p class="status-hero-desc" th:text="${statusDescription}">
+                        Buyurtmangiz kuryerga topshirildi va yetkazib berish xizmati manzil tomon yo'l oldi.
+                    </p>
+                </div>
+
+                <!-- Quick Details -->
+                <div class="details-box">
+                    <div class="details-row">
+                        <span class="details-label">Buyurtma summasi:</span>
+                        <span class="details-value" th:text="'$' + ${#numbers.formatDecimal(totalAmount, 1, 2)}">$0.00</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">To'lov holati:</span>
+                        <span class="details-value" th:text="${paymentStatusText}">To'langan</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Yangilangan vaqt:</span>
+                        <span class="details-value" th:text="${updatedAt}">14.10.2026, 23:35</span>
+                    </div>
+                </div>
+
+                <div class="cta-container">
+                    <a th:href="${trackUrl}" class="btn-track" target="_blank">
+                        Holatni onlayn kuzatish 🔍
+                    </a>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="footer">
+                <p style="margin: 0 0 4px 0;">© 2026 ShopLuxe Commerce Platform. Barcha huquqlar himoyalangan.</p>
+                <p style="margin: 0;">Savollaringiz bo'lsa: support@shopluxe.uz</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

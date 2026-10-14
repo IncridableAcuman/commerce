@@ -89,8 +89,14 @@ public class AuthDto {
             String email,
             String role,
             String avatar,
+            String phoneNumber,
+            String address,
             boolean enabled
     ) {
+        public UserResponse(Long id, String fullName, String username, String email, String role, String avatar, boolean enabled) {
+            this(id, fullName, username, email, role, avatar, null, null, enabled);
+        }
+
         public static UserResponse from(com.commerce.backend.entity.UserEntity user) {
             if (user == null) return null;
             return new UserResponse(
@@ -100,6 +106,8 @@ public class AuthDto {
                     user.getEmail(),
                     user.getRole() != null ? user.getRole().name() : null,
                     user.getAvatar(),
+                    user.getPhoneNumber(),
+                    user.getAddress(),
                     user.isEnabled()
             );
         }

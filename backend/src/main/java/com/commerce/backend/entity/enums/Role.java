@@ -1,5 +1,8 @@
 package com.commerce.backend.entity.enums;
 
 public enum Role {
-    USER,ADMIN
+    USER,
+    MANAGER,
+    ADMIN
 }
+

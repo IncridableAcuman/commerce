@@ -104,7 +104,7 @@ export const ProductCard = ({
               onQuickView(product);
             }}
             aria-label="Tezkor ko'rish"
-            className="w-8 h-8 rounded-full bg-slate-900/70 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-md cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-900/70 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700/60 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-md cursor-pointer"
           >
             <Eye className="w-4 h-4" />
           </button>
@@ -112,7 +112,7 @@ export const ProductCard = ({
 
         {/* Boshqaruv tugmalari (Tahrirlash / O'chirish) */}
         {canManage && (
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 z-10">
             {onEdit && (
               <button
                 onClick={(e) => {

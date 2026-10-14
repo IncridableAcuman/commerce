@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="uz" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyurtma tasdiqlandi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #0f172a;
+            padding: 30px 15px;
+        }
+        .main-card {
+            background-color: #ffffff;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 620px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            padding: 36px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .brand-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .header h1 {
+            margin: 0 0 6px 0;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            margin: 0;
+            font-size: 14px;
+            color: #e0e7ff;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 32px 30px;
+        }
+        .greeting {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .intro-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #64748b;
+            margin: 0 0 24px 0;
+        }
+        .info-grid {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+        }
+        .info-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        .info-label {
+            display: table-cell;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            width: 45%;
+        }
+        .info-value {
+            display: table-cell;
+            font-size: 13px;
+            color: #0f172a;
+            font-weight: 700;
+            text-align: right;
+        }
+        .status-badge {
+            display: inline-block;
+            background-color: #dbeafe;
+            color: #1e40af;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        .items-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 14px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+        .items-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .items-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        .product-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            background-color: #f1f5f9;
+            display: block;
+        }
+        .product-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 2px 0;
+            line-height: 1.4;
+        }
+        .product-meta {
+            font-size: 11px;
+            color: #64748b;
+        }
+        .product-price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .summary-box {
+            background-color: #f8fafc;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+        }
+        .summary-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        .summary-label {
+            display: table-cell;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .summary-value {
+            display: table-cell;
+            font-size: 13px;
+            color: #1e293b;
+            font-weight: 600;
+            text-align: right;
+        }
+        .total-row {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed #cbd5e1;
+        }
+        .total-label {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .total-value {
+            font-size: 18px;
+            font-weight: 900;
+            color: #4f46e5;
+            text-align: right;
+        }
+        .shipping-card {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 28px;
+        }
+        .shipping-card h4 {
+            margin: 0 0 6px 0;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #475569;
+        }
+        .shipping-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.5;
+        }
+        .cta-container {
+            text-align: center;
+            margin: 30px 0 10px 0;
+        }
+        .btn-track {
+            display: inline-block;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        }
+        .help-note {
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.5;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .footer {
+            background-color: #0f172a;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <table class="main-card" cellpadding="0" cellspacing="0" role="presentation">
+        <!-- Header -->
+        <tr>
+            <td class="header">
+                <div class="brand-badge">ShopLuxe Commerce</div>
+                <h1>Buyurtmangiz qabul qilindi!</h1>
+                <p>Buyurtma raqami: <strong th:text="${orderNumber}">#ORD-0000</strong></p>
+            </td>
+        </tr>
+
+        <!-- Main Body -->
+        <tr>
+            <td class="content">
+                <div class="greeting">
+                    Assalomu alaykum, <span th:text="${customerName}">Hurmatli mijoz</span>!
+                </div>
+                <p class="intro-text">
+                    Bizning do'konimizdan xarid qilganingiz uchun tashakkur. Sizning buyurtmangiz muvaffaqiyatli qabul qilindi va mutaxassislarimiz tomonidan qayta ishlanmoqda.
+                </p>
+
+                <!-- Order Info Grid -->
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Buyurtma sanasi:</span>
+                        <span class="info-value" th:text="${orderDate}">14.10.2026, 23:30</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Holati:</span>
+                        <span class="info-value"><span class="status-badge" th:text="${orderStatusText}">Kutilmoqda</span></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">To'lov usuli:</span>
+                        <span class="info-value" th:text="${paymentMethodText}">Naqd pul</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">To'lov holati:</span>
+                        <span class="info-value" th:text="${paymentStatusText}">Kutilmoqda</span>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="items-title">Buyurtma qilingan mahsulotlar</div>
+                <table class="items-table" role="presentation">
+                    <thead>
+                        <tr>
+                            <th style="width: 58px;">Rasm</th>
+                            <th>Mahsulot</th>
+                            <th style="text-align: right;">Jami</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${items}">
+                            <td>
+                                <img th:src="${item.imageUrl != null ? item.imageUrl : 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=150&q=80'}" 
+                                     alt="Mahsulot" 
+                                     class="product-img" />
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <div class="product-title" th:text="${item.title}">Mahsulot nomi</div>
+                                <div class="product-meta">
+                                    <span th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)} + ' × ' + ${item.quantity} + ' dona'">$10.00 × 1 dona</span>
+                                </div>
+                            </td>
+                            <td class="product-price" th:text="'$' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">
+                                $10.00
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Summary -->
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span class="summary-label">Mahsulotlar summasi:</span>
+                        <span class="summary-value" th:text="'$' + ${#numbers.formatDecimal(subtotalAmount, 1, 2)}">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Yetkazib berish:</span>
+                        <span class="summary-value" style="color: #16a34a;">Bepul ($0.00)</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span class="summary-label total-label">Jami to'lov:</span>
+                        <span class="summary-value total-value" th:text="'$' + ${#numbers.formatDecimal(totalAmount, 1, 2)}">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Shipping Address Card -->
+                <div class="shipping-card">
+                    <h4>Yetkazib berish manzili:</h4>
+                    <p>
+                        <strong th:text="${customerName}">Ism Familiya</strong><br/>
+                        <span th:text="${customerPhone}">+998 90 123 45 67</span><br/>
+                        <span th:text="${shippingAddress}">Amir Temur ko'chasi 45-uy</span>
+                        <span th:if="${city != null}" th:text="', ' + ${city}">, Toshkent</span>
+                        <span th:if="${postalCode != null}" th:text="' (' + ${postalCode} + ')'"> (100000)</span>
+                    </p>
+                    <p th:if="${orderNotes != null and !orderNotes.empty}" style="margin-top: 8px; color: #64748b; font-style: italic;">
+                        Izoh: <span th:text="${orderNotes}">Izoh matni</span>
+                    </p>
+                </div>
+
+                <!-- Track CTA -->
+                <div class="cta-container">
+                    <a th:href="${trackUrl}" class="btn-track" target="_blank">
+                        Buyurtmani kuzatish 📦
+                    </a>
+                </div>
+
+                <div class="help-note">
+                    Savollaringiz bormi? Biz bilan bog'laning: <strong style="color: #4f46e5;">support@shopluxe.uz</strong> yoki <strong style="color: #4f46e5;">+998 (90) 123-45-67</strong>
+                </div>
+            </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+            <td class="footer">
+                <p style="margin: 0 0 6px 0;">© 2026 ShopLuxe Commerce Platform. Barcha huquqlar himoyalangan.</p>
+                <p style="margin: 0;">Ushbu xat avtomatik ravishda yuborildi, unga javob qaytarish shart emas.</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

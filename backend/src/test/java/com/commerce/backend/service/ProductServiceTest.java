@@ -37,6 +37,9 @@ class ProductServiceTest {
     @Mock
     private ProductCategoryRepository productCategoryRepository;
 
+    @Mock
+    private com.commerce.backend.elasticsearch.service.ProductSearchService productSearchService;
+
     @InjectMocks
     private ProductService productService;
 
@@ -71,7 +74,7 @@ class ProductServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<ProductEntity> productPage = new PageImpl<>(List.of(product), pageable, 1);
 
-        when(productRepository.findWithFilters(eq(1L), eq("macbook"), eq(1000.0), eq(3000.0), eq(pageable)))
+        when(productRepository.findWithFilters(eq(1L), eq("macbook"), eq(1000.0), eq(3000.0), eq(false), eq(pageable)))
                 .thenReturn(productPage);
 
         Page<ProductResponse> result = productService.getAllProducts(1L, "macbook", 1000.0, 3000.0, pageable);

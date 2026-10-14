@@ -17,6 +17,7 @@ interface ProductState {
   sortDir: 'asc' | 'desc';
   minPrice: number | null;
   maxPrice: number | null;
+  inStock: boolean | null;
   currentPage: number;
   totalPages: number;
   totalElements: number;
@@ -33,6 +34,8 @@ interface ProductState {
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: string, sortDir?: 'asc' | 'desc') => void;
   setPriceRange: (min: number | null, max: number | null) => void;
+  setInStock: (inStock: boolean | null) => void;
+  resetFilters: () => void;
   setPage: (page: number) => void;
   getProductById: (id: number) => Promise<Product | null>;
   createProduct: (data: ProductRequest) => Promise<Product>;
@@ -50,6 +53,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   sortDir: "desc",
   minPrice: null,
   maxPrice: null,
+  inStock: null,
   currentPage: 0,
   totalPages: 1,
   totalElements: 0,
@@ -78,6 +82,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
       sortDir, 
       minPrice, 
       maxPrice, 
+      inStock,
       currentPage, 
       pageSize 
     } = get();
@@ -88,6 +93,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
     const dir = customParams.sortDir || sortDir;
     const min = customParams.minPrice !== undefined ? customParams.minPrice : minPrice;
     const max = customParams.maxPrice !== undefined ? customParams.maxPrice : maxPrice;
+    const stockFilter = customParams.inStock !== undefined ? customParams.inStock : inStock;
     const page = customParams.page !== undefined ? customParams.page : currentPage;
     const size = customParams.size !== undefined ? customParams.size : pageSize;
 
@@ -105,6 +111,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
       if (search && search.trim()) params.search = search.trim();
       if (min !== null && min !== undefined) params.minPrice = min;
       if (max !== null && max !== undefined) params.maxPrice = max;
+      if (stockFilter !== null && stockFilter !== undefined) params.inStock = stockFilter;
 
       const response = await api.get<PaginatedProducts>("/products", { params });
 
@@ -142,6 +149,34 @@ export const useProductStore = create<ProductState>((set, get) => ({
   setPriceRange: (min, max) => {
     set({ minPrice: min, maxPrice: max, currentPage: 0 });
     get().fetchProducts({ minPrice: min, maxPrice: max, page: 0 });
+  },
+
+  setInStock: (inStock) => {
+    set({ inStock, currentPage: 0 });
+    get().fetchProducts({ inStock, page: 0 });
+  },
+
+  resetFilters: () => {
+    set({
+      selectedCategory: null,
+      searchQuery: "",
+      minPrice: null,
+      maxPrice: null,
+      inStock: null,
+      sortBy: "createdAt",
+      sortDir: "desc",
+      currentPage: 0,
+    });
+    get().fetchProducts({
+      categoryId: null,
+      search: "",
+      minPrice: null,
+      maxPrice: null,
+      inStock: null,
+      sortBy: "createdAt",
+      sortDir: "desc",
+      page: 0,
+    });
   },
 
   setPage: (page) => {

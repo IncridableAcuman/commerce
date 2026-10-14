@@ -9,8 +9,13 @@ import {
   X, 
   LogOut, 
   ShoppingBasket,
-  LogIn 
+  LogIn,
+  Package,
+  Truck,
+  ShieldCheck,
+  BarChart3
 } from 'lucide-react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
@@ -74,15 +79,15 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
         
         {/* 1. Logo va Brend */}
-        <div className="flex items-center gap-8">
-          <Link to="/" onClick={() => setSelectedCategory(null)} className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-              <ShoppingBag className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-3 sm:gap-8">
+          <Link to="/" onClick={() => setSelectedCategory(null)} className="flex items-center gap-2 sm:gap-3 group shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <span className="text-xl font-extrabold tracking-wide text-white">
+            <span className="text-lg sm:text-xl font-extrabold tracking-wide text-white">
               Shop<span className="text-indigo-400">Luxe</span>
             </span>
           </Link>
@@ -147,6 +152,28 @@ const Navbar = () => {
 
         {/* 3. O'ng qism: Sevimlilar, Savat va Foydalanuvchi */}
         <div className="flex items-center gap-3">
+          {/* Admin / Manager Dashboard tugmasi */}
+          {(user?.role === "ADMIN" || user?.role === "MANAGER") && (
+            <Link
+              to="/admin"
+              className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-300 border border-indigo-500/20 text-xs font-semibold transition-all cursor-pointer"
+              title="Boshqaruv paneli"
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>Dashboard</span>
+            </Link>
+          )}
+
+          {/* Buyurtmani kuzatish (Track) */}
+          <Link
+            to="/track"
+            className="hidden sm:flex relative p-2.5 text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-xl transition-all cursor-pointer"
+            title="Buyurtmani kuzatish"
+          >
+            <Truck className="w-5 h-5" />
+          </Link>
+
+
           {/* Sevimlilar (Wishlist) */}
           <Link
             to="/"
@@ -217,6 +244,75 @@ const Navbar = () => {
                     <div className="px-4 py-1 text-xs text-indigo-400 font-semibold uppercase tracking-wider">
                       Rol: {user?.role || "USER"}
                     </div>
+
+                    <div className="border-t border-slate-800 my-1" />
+
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+                    >
+                      <User className="w-4 h-4 text-emerald-400" />
+                      <span>Mening profilim</span>
+                    </Link>
+
+                    <Link
+                      to="/my-orders"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+                    >
+                      <Package className="w-4 h-4 text-indigo-400" />
+                      <span>Buyurtmalarim</span>
+                    </Link>
+
+                    {/* Agar foydalanuvchi ADMIN yoki MANAGER bo'lsa */}
+                    {(user?.role === "ADMIN" || user?.role === "MANAGER") && (
+                      <>
+                        <Link
+                          to="/admin"
+                          onClick={() => setIsProfileDropdownOpen(false)}
+                          className="w-full flex items-center justify-between px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <BarChart3 className="w-4 h-4 text-indigo-400" />
+                            <span>Boshqaruv paneli</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                            user?.role === "ADMIN"
+                              ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                              : "bg-indigo-500/10 text-indigo-400 border-indigo-500/20"
+                          }`}>
+                            {user?.role}
+                          </span>
+                        </Link>
+
+                        {user?.role === "ADMIN" && (
+                          <Link
+                            to="/admin?tab=roles"
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="w-full flex items-center justify-between px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <ShieldCheck className="w-4 h-4 text-rose-400" />
+                              <span>Rollar boshqaruvi</span>
+                            </div>
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                              ADMIN
+                            </span>
+                          </Link>
+                        )}
+                      </>
+                    )}
+
+
+                    <Link
+                      to="/track"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                      className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+                    >
+                      <Truck className="w-4 h-4 text-cyan-400" />
+                      <span>Buyurtmani kuzatish</span>
+                    </Link>
 
                     <div className="border-t border-slate-800 my-1" />
 
@@ -309,6 +405,68 @@ const Navbar = () => {
                     <p className="text-sm font-semibold text-white">{user?.fullName || user?.username}</p>
                     <p className="text-xs text-slate-400">{user?.email}</p>
                   </div>
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 rounded-lg transition-colors"
+                  >
+                    <User className="w-4 h-4 text-emerald-400" />
+                    <span>Mening profilim</span>
+                  </Link>
+                  <Link
+                    to="/my-orders"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 rounded-lg transition-colors"
+                  >
+                    <Package className="w-4 h-4 text-indigo-400" />
+                    <span>Mening buyurtmalarim</span>
+                  </Link>
+                  {(user?.role === "ADMIN" || user?.role === "MANAGER") && (
+                    <>
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 rounded-lg transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4 text-indigo-400" />
+                          <span>Boshqaruv paneli</span>
+                        </div>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                          user?.role === "ADMIN"
+                            ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                            : "bg-indigo-500/10 text-indigo-400 border-indigo-500/20"
+                        }`}>
+                          {user?.role}
+                        </span>
+                      </Link>
+
+                      {user?.role === "ADMIN" && (
+                        <Link
+                          to="/admin?tab=roles"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-between px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 rounded-lg transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <ShieldCheck className="w-4 h-4 text-rose-400" />
+                            <span>Rollar boshqaruvi</span>
+                          </div>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                            ADMIN
+                          </span>
+                        </Link>
+                      )}
+                    </>
+                  )}
+
+                  <Link
+                    to="/track"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-slate-900 rounded-lg transition-colors"
+                  >
+                    <Truck className="w-4 h-4 text-cyan-400" />
+                    <span>Buyurtmani kuzatish</span>
+                  </Link>
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);

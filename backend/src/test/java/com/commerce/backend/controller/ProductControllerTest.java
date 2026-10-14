@@ -60,7 +60,7 @@ class ProductControllerTest {
                 LocalDateTime.now()
         );
 
-        when(productService.getAllProducts(any(), any(), any(), any(), any(Pageable.class)))
+        when(productService.getAllProducts(any(), any(), any(), any(), any(), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(response)));
 
         mockMvc.perform(get("/products")

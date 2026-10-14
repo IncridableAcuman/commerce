@@ -80,7 +80,7 @@ export const ProductDetailModal = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: "spring", stiffness: 350, damping: 25 }}
-          className="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl shadow-black/60 overflow-hidden z-10 my-8"
+          className="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl shadow-2xl shadow-black/60 overflow-y-auto max-h-[92vh] z-10 my-4 sm:my-8"
         >
           {/* Yopish tugmasi */}
           <button
@@ -90,7 +90,7 @@ export const ProductDetailModal = ({
             <X className="w-5 h-5" />
           </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-6 sm:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-5 sm:p-8">
             
             {/* Chap tomon: Rasm galereyasi */}
             <div className="space-y-4">

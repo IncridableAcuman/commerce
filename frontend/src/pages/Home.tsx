@@ -29,6 +29,9 @@ const Home = () => {
     searchQuery,
     sortBy,
     sortDir,
+    minPrice,
+    maxPrice,
+    inStock,
     totalElements,
     currentPage,
     totalPages,
@@ -39,11 +42,15 @@ const Home = () => {
     setSelectedCategory,
     setSearchQuery,
     setSortBy,
+    setPriceRange,
+    setInStock,
+    resetFilters,
     setPage,
     deleteProduct,
   } = useProductStore();
 
-  const { isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
+  const canManage = Boolean(isAuthenticated && (user?.role === "ADMIN" || user?.role === "MANAGER"));
 
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -62,8 +69,7 @@ const Home = () => {
   };
 
   const handleResetFilters = () => {
-    setSelectedCategory(null);
-    setSearchQuery("");
+    resetFilters();
   };
 
   const handleEditProduct = (product: Product) => {
@@ -83,7 +89,13 @@ const Home = () => {
     }
   };
 
-  const hasActiveFilters = Boolean(selectedCategory !== null || searchQuery.trim() !== "");
+  const hasActiveFilters = Boolean(
+    selectedCategory !== null || 
+    searchQuery.trim() !== "" || 
+    minPrice !== null || 
+    maxPrice !== null || 
+    inStock !== null
+  );
 
   return (
     <div className="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
@@ -112,6 +124,11 @@ const Home = () => {
           sortBy={sortBy}
           sortDir={sortDir}
           onSortChange={setSortBy}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onPriceChange={setPriceRange}
+          inStock={inStock}
+          onInStockChange={setInStock}
           totalElements={totalElements}
           onOpenAddModal={() => {
             setProductToEdit(null);
@@ -119,6 +136,7 @@ const Home = () => {
           }}
           onResetFilters={handleResetFilters}
           hasActiveFilters={hasActiveFilters}
+          canManage={canManage}
         />
       </div>
 
@@ -161,10 +179,11 @@ const Home = () => {
                   onQuickView={(p) => setQuickViewProduct(p)}
                   onEdit={(p) => handleEditProduct(p)}
                   onDelete={(id) => setDeleteId(id)}
-                  canManage={isAuthenticated}
+                  canManage={canManage}
                 />
               ))}
             </div>
+
 
             {/* Sahifalash (Pagination) */}
             {totalPages > 1 && (

@@ -6,7 +6,7 @@ export const api: AxiosInstance = axios.create({
     timeout: 10000,
 });
 
-// Request Interceptor: Ochiq auth yo'nalishlariga tokenni majburan qo'shmaslik, lekin /auth/me uchun qo'shish
+// Request Interceptor: Logging va JWT token qo'shish
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         const publicAuthRoutes = [
@@ -25,24 +25,45 @@ api.interceptors.request.use(
         if (token && !isPublicAuthRoute) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
+
+        if (import.meta.env.DEV) {
+            console.debug(`[API REQ] ${config.method?.toUpperCase()} ${config.url}`, config.params || "");
+        }
         return config;
     },
-    (error: AxiosError) => Promise.reject(error)
+    (error: AxiosError) => {
+        console.error('[API REQ ERROR]', error);
+        return Promise.reject(error);
+    }
 );
 
-// Response Interceptor: 401/403 bo'lganda avto-refresh qilish
+// Response Interceptor: 401/403 bo'lganda avto-refresh qilish va xatoliklarni chiroyli loglash
 api.interceptors.response.use(
-    (response: AxiosResponse) => response,
+    (response: AxiosResponse) => {
+        if (import.meta.env.DEV) {
+            console.debug(`[API RES] ${response.status} ${response.config.url}`);
+        }
+        return response;
+    },
     async (error: AxiosError) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & {
             _retry?: boolean;
         };
 
+        const errorData = error.response?.data as any;
+        if (errorData) {
+            console.warn(`[API ERROR ${error.response?.status}] ${error.config?.url}:`, {
+                message: errorData.message,
+                validationErrors: errorData.validationErrors,
+                path: errorData.path
+            });
+        }
+
         if ((error.response?.status === 401 || error.response?.status === 403) && originalRequest && !originalRequest._retry) {
             originalRequest._retry = true;
 
             // Refresh so'rovining o'zi muvaffaqiyatsiz bo'lsa siklni to'xtatamiz
-            if (originalRequest.url?.includes('/auth/refresh')) {
+            if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
                 localStorage.removeItem("accessToken");
                 return Promise.reject(error);
             }
@@ -57,7 +78,10 @@ api.interceptors.response.use(
                 return api(originalRequest);
             } catch (refreshErr) {
                 localStorage.removeItem("accessToken");
-                window.location.href = "/auth";
+                // Agar ochiq sahifada bo'lmasa, auth sahifasiga yo'naltirish
+                if (!window.location.pathname.startsWith('/auth') && window.location.pathname !== '/') {
+                    window.location.href = "/auth";
+                }
                 return Promise.reject(refreshErr);
             }
         }

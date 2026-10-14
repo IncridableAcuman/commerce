@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { IUser } from "../interfaces/user.interface";
+import type { IUser, ProfileUpdateRequest, ChangePasswordRequest } from "../interfaces/user.interface";
 import type {
   ForgotPasswordData,
   LoginData,
@@ -34,6 +34,9 @@ interface AuthState {
   loginWithGoogleToken: (googleToken: string) => Promise<boolean>;
   redirectToGoogleOAuth: () => void;
   clearError: () => void;
+  updateProfile: (data: ProfileUpdateRequest) => Promise<boolean>;
+  changePassword: (data: ChangePasswordRequest) => Promise<boolean>;
+  uploadAvatar: (file: File) => Promise<string | null>;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -285,5 +288,62 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
     // Redirect to OAuth2 authorization endpoint
     window.location.href = `${backendBaseUrl}/oauth2/authorization/google`;
+  },
+
+  updateProfile: async (data: ProfileUpdateRequest) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await api.put<IUser>("/users/profile", data);
+      set({ user: response.data, isLoading: false });
+      toast.success("Profilingiz muvaffaqiyatli yangilandi!");
+      return true;
+    } catch (err: unknown) {
+      const errorMsg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message || "Profilni yangilashda xatolik yuz berdi";
+      set({ error: errorMsg, isLoading: false });
+      toast.error(errorMsg);
+      return false;
+    }
+  },
+
+  changePassword: async (data: ChangePasswordRequest) => {
+    set({ isLoading: true, error: null });
+    try {
+      await api.put("/users/change-password", data);
+      set({ isLoading: false });
+      toast.success("Parol muvaffaqiyatli o'zgartirildi!");
+      return true;
+    } catch (err: unknown) {
+      const errorMsg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message || "Parolni o'zgartirishda xatolik yuz berdi";
+      set({ error: errorMsg, isLoading: false });
+      toast.error(errorMsg);
+      return false;
+    }
+  },
+
+  uploadAvatar: async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await api.post<{ avatarUrl: string }>("/users/avatar", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      const avatarUrl = response.data.avatarUrl;
+      const currentUser = get().user;
+      if (currentUser) {
+        set({ user: { ...currentUser, avatar: avatarUrl } });
+      }
+      toast.success("Avatar muvaffaqiyatli yangilandi!");
+      return avatarUrl;
+    } catch (err: unknown) {
+      const errorMsg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message || "Avatar yuklashda xatolik yuz berdi";
+      toast.error(errorMsg);
+      return null;
+    }
   },
 }));

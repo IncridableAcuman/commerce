@@ -42,7 +42,7 @@ export const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight"
+            className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight"
           >
             Mukammal Sifat,{" "}
             <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-400 via-purple-400 to-pink-400">
@@ -55,7 +55,7 @@ export const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-slate-300 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mx-auto"
+            className="text-slate-300 text-sm sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl mx-auto"
           >
             Zamonaviy elektronika, premium kiyim-kechak va zamonaviy aksessuarlar. Rasmiy kafolat va tezkor yetkazib berish xizmati bilan.
           </motion.p>
@@ -65,11 +65,11 @@ export const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-4 pt-2"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2"
           >
             <button
               onClick={onExploreClick}
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-linear-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-linear-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             >
               <span>Xaridni boshlash</span>
               <ArrowRight className="w-4 h-4" />
@@ -77,7 +77,7 @@ export const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
 
             <a
               href="#categories-section"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 text-slate-200 hover:text-white font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 text-slate-200 hover:text-white font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Flame className="w-4 h-4 text-orange-400" />
               <span>Ommabop mahsulotlar</span>
@@ -90,7 +90,7 @@ export const HeroSection = ({ onExploreClick }: HeroSectionProps) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-12 sm:mt-16 pt-8 border-t border-slate-800/60"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-16 pt-8 border-t border-slate-800/60"
         >
           <div className="bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3.5 backdrop-blur-xs hover:border-slate-700 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
