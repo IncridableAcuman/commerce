@@ -5,7 +5,11 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
+let rawBaseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
+if (rawBaseURL && !rawBaseURL.endsWith("/api/v1") && !rawBaseURL.endsWith("/api/v1/")) {
+  rawBaseURL = rawBaseURL.replace(/\/+$/, "") + "/api/v1";
+}
+export const baseURL = rawBaseURL.replace(/\/+$/, "");
 
 export const api: AxiosInstance = axios.create({
   withCredentials: true,

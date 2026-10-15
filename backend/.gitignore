@@ -26,19 +26,11 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
 ### VS Code ###
-.vclass Number(int):
-      def __new__(cls,x):
-          super().__new__(cls,x)
+.vscode/
 
-      def digits_sum(self):
-          return sum(int(digit) for digit in str(self.real))scode/
+### Secrets & Logs ###
 .env
+.env.local
 logs
+uploads/

@@ -41,6 +41,9 @@ public class OrderService {
     private final MailService mailService;
     private final EmailTemplateService emailTemplateService;
 
+    @org.springframework.beans.factory.annotation.Value("${client.url:http://localhost:5173}")
+    private String clientUrl = "http://localhost:5173";
+
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest request, Authentication authentication) {
         if (request.getItems() == null || request.getItems().isEmpty()) {
@@ -380,7 +383,7 @@ public class OrderService {
             }
         }
         variables.put("items", itemsList);
-        variables.put("trackUrl", "http://localhost:5173/track/" + order.getOrderNumber());
+        variables.put("trackUrl", clientUrl + "/track/" + order.getOrderNumber());
 
         return variables;
     }

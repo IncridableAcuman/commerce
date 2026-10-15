@@ -1,0 +1,63 @@
+services:
+  # ============================================================================
+  # 1. Backend Web Service (Spring Boot Docker)
+  # ============================================================================
+  - type: web
+    name: commerce-backend
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    region: ohio
+    healthCheckPath: /api/v1/actuator/health
+    envVars:
+      - key: PORT
+        value: 8080
+      # Neon.tech Cloud PostgreSQL Connection
+      - key: DB_URL
+        value: jdbc:postgresql://ep-hidden-dew-b4v4ibmp-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require
+      - key: DB_USERNAME
+        value: neondb_owner
+      - key: DB_PASSWORD
+        value: npg_JEqnA7b2NSQO
+      # JWT Authentication
+      - key: JWT_SECRET
+        value: uzbekistan_uzbekistan_0123456789
+      - key: JWT_REFRESH
+        value: 604800000
+      - key: JWT_ACCESS
+        value: 900000
+      # Email SMTP
+      - key: MAIL_USERNAME
+        value: abdusharipovizzat03@gmail.com
+      - key: MAIL_PASSWORD
+        value: khgcufxqqhtmqxca
+      # Frontend Client URL (CORS & Email links)
+      - key: CLIENT_URL
+        value: https://commerce-frontend.onrender.com
+      # File Uploads Directory
+      - key: UPLOAD_DIR
+        value: /app/uploads
+      # Fallbacks & Optimizations
+      - key: ELASTICSEARCH_ENABLED
+        value: "false"
+      - key: SHOW_SQL
+        value: "false"
+
+  # ============================================================================
+  # 2. Frontend Static Site (React Vite SPA)
+  # ============================================================================
+  - type: web
+    name: commerce-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://commerce-backend.onrender.com/api/v1

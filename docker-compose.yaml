@@ -86,9 +86,9 @@ services:
         condition: service_healthy
     environment:
       PORT: 8080
-      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-commerce}
-      DB_USERNAME: ${POSTGRES_USER:-admin2003}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-admin2003}
+      DB_URL: ${DB_URL:-jdbc:postgresql://db:5432/${POSTGRES_DB:-commerce}}
+      DB_USERNAME: ${DB_USERNAME:-${POSTGRES_USER:-admin2003}}
+      DB_PASSWORD: ${DB_PASSWORD:-${POSTGRES_PASSWORD:-admin2003}}
       REDIS_HOST: redis
       RABBITMQ_HOST: rabbitmq
       MAIL_USERNAME: ${MAIL_USERNAME:-}

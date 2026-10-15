@@ -16,6 +16,7 @@ import { OrderTimeline } from "./OrderTimeline";
 import { useState } from "react";
 import { useOrderStore } from "../../stores/orderStore";
 import { toast } from "react-toastify";
+import { baseURL } from "../../api/axiosInstance";
 
 interface OrderDetailModalProps {
   order: Order | null;
@@ -106,7 +107,7 @@ export const OrderDetailModal = ({
 
             <div className="flex items-center gap-2">
               <a
-                href={`http://localhost:8080/api/v1/orders/track/${order.orderNumber}/invoice-html`}
+                href={`${baseURL}/orders/track/${order.orderNumber}/invoice-html`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-indigo-600 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors"

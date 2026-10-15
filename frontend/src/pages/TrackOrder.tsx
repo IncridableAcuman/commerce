@@ -13,6 +13,7 @@ import { useOrderStore } from "../stores/orderStore";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { OrderStatusBadge, PaymentStatusBadge } from "../components/orders/OrderStatusBadge";
+import { baseURL } from "../api/axiosInstance";
 import { OrderTimeline } from "../components/orders/OrderTimeline";
 import type { Order } from "../interfaces/order.interface";
 import { toast } from "react-toastify";
@@ -123,7 +124,7 @@ export const TrackOrder = () => {
 
               <div className="flex flex-wrap items-center gap-2">
                 <a
-                  href={`http://localhost:8080/api/v1/orders/track/${trackedOrder.orderNumber}/invoice-html`}
+                  href={`${baseURL}/orders/track/${trackedOrder.orderNumber}/invoice-html`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-indigo-600 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors"

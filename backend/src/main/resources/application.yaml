@@ -3,8 +3,8 @@ server:
   servlet:
     context-path: /api/v1
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 spring:
   config:
@@ -12,20 +12,27 @@ spring:
   application:
     name: backend
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:${DATABASE_URL:jdbc:postgresql://localhost:5432/commerce}}
+    username: ${DB_USERNAME:admin2003}
+    password: ${DB_PASSWORD:admin2003}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
   jpa:
     hibernate:
       ddl-auto: update
-      show-sql: true
-      properties:
-        format-sql: true
+    show-sql: ${SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     properties:
@@ -34,16 +41,23 @@ spring:
           auth: true
           starttls:
             enable: true
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: 6379
   data:
-    rabbitmq:
-      host: ${RABBITMQ_HOST:localhost}
-      port: 5672
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
     elasticsearch:
       repositories:
         enabled: ${ELASTICSEARCH_ENABLED:false}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:${RABBITMQ_USERNAME:guest}}
+    password: ${RABBITMQ_PASS:${RABBITMQ_PASSWORD:guest}}
   elasticsearch:
     uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
   security:
@@ -59,11 +73,10 @@ spring:
               - email
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
-
 jwt:
-  secret: ${JWT_SECRET}
-  refresh_time: ${JWT_REFRESH}
-  access_time: ${JWT_ACCESS}
+  secret: ${JWT_SECRET:uzbekistan_uzbekistan_0123456789}
+  refresh_time: ${JWT_REFRESH:604800000}
+  access_time: ${JWT_ACCESS:900000}
 
 file:
   upload:
@@ -82,3 +95,12 @@ management:
       show-details: when-authorized
       probes:
         enabled: true
+  health:
+    db:
+      enabled: true
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+    mail:
+      enabled: false
