@@ -347,3 +347,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 }));
+
+if (typeof window !== "undefined") {
+  window.addEventListener("auth:token-refreshed", ((event: CustomEvent<{ token: string }>) => {
+    const token = event.detail?.token;
+    if (token) {
+      useAuthStore.setState({ token, isAuthenticated: true });
+    }
+  }) as EventListener);
+
+  window.addEventListener("auth:session-expired", () => {
+    useAuthStore.setState({ token: null, user: null, isAuthenticated: false });
+  });
+}

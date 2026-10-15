@@ -86,7 +86,7 @@ describe("MyOrders page integration", () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText("Mening buyurtmalarim")).toBeInTheDocument();
+    expect(screen.getAllByText("Mening buyurtmalarim").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("#ORD-USER-777")).toBeInTheDocument();
     expect(screen.getAllByText("Kutilmoqda").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$120.00")).toBeInTheDocument();

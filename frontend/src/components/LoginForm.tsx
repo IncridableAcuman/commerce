@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginData } from "../schemas/auth.schema";
 import { useAuthStore } from "../stores/authStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const LoginForm = ({
   isAuth,
@@ -17,6 +17,7 @@ const LoginForm = ({
 }) => {
   const { login, isLoading, redirectToGoogleOAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
@@ -28,7 +29,8 @@ const LoginForm = ({
   const handleLogin = async (data: LoginData) => {
     const success = await login(data);
     if (success) {
-      navigate("/");
+      const from = (location.state as any)?.from?.pathname || "/";
+      navigate(from, { replace: true });
     }
   };
 
@@ -38,10 +40,10 @@ const LoginForm = ({
         {/* Email input va xatolik */}
         <div className="space-y-1.5">
           <div
-            className={`flex items-center gap-3 bg-slate-800/50 border px-4 py-3.5 rounded-2xl transition-all ${
+            className={`flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border px-4 py-3.5 rounded-2xl transition-all ${
               errors.email
                 ? "border-red-500/80 focus-within:ring-red-500/20"
-                : "border-slate-700/60 focus-within:border-indigo-500 focus-within:ring-indigo-500/20"
+                : "border-slate-200 dark:border-slate-700/60 focus-within:border-indigo-500 focus-within:ring-indigo-500/20"
             } focus-within:ring-2`}
           >
             <Mail className="w-5 h-5 text-slate-400" />
@@ -50,21 +52,21 @@ const LoginForm = ({
               id="email"
               placeholder="name@example.com"
               {...register("email")}
-              className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-sm"
+              className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm"
             />
           </div>
           {errors.email && (
-            <p className="text-xs text-red-400 mt-1 pl-1">{errors.email.message}</p>
+            <p className="text-xs text-red-500 dark:text-red-400 mt-1 pl-1">{errors.email.message}</p>
           )}
         </div>
 
         {/* Password input va xatolik */}
         <div className="space-y-1.5">
           <div
-            className={`flex items-center gap-3 bg-slate-800/50 border px-4 py-3.5 rounded-2xl transition-all ${
+            className={`flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border px-4 py-3.5 rounded-2xl transition-all ${
               errors.password
                 ? "border-red-500/80 focus-within:ring-red-500/20"
-                : "border-slate-700/60 focus-within:border-indigo-500 focus-within:ring-indigo-500/20"
+                : "border-slate-200 dark:border-slate-700/60 focus-within:border-indigo-500 focus-within:ring-indigo-500/20"
             } focus-within:ring-2`}
           >
             <Lock className="w-5 h-5 text-slate-400" />
@@ -73,29 +75,29 @@ const LoginForm = ({
               id="password"
               placeholder="••••••••"
               {...register("password")}
-              className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-sm"
+              className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
           {errors.password && (
-            <p className="text-xs text-red-400 mt-1 pl-1">{errors.password.message}</p>
+            <p className="text-xs text-red-500 dark:text-red-400 mt-1 pl-1">{errors.password.message}</p>
           )}
         </div>
 
         {isAuth && (
           <div className="flex justify-end">
-            <a
-              href="/forgot-password"
-              className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+            <Link
+              to="/forgot-password"
+              className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
             >
               Parolni unutdingizmi?
-            </a>
+            </Link>
           </div>
         )}
 
@@ -113,8 +115,8 @@ const LoginForm = ({
 
       {/* Ajratuvchi chiziq */}
       <div className="relative my-4 flex items-center justify-center">
-        <div className="border-t border-slate-800 w-full" />
-        <span className="bg-slate-900 px-3 text-xs text-slate-500 uppercase tracking-wider absolute">
+        <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
+        <span className="bg-white dark:bg-slate-900 px-3 text-xs text-slate-500 uppercase tracking-wider absolute">
           yoki
         </span>
       </div>
@@ -123,7 +125,7 @@ const LoginForm = ({
       <button
         type="button"
         onClick={redirectToGoogleOAuth}
-        className="w-full bg-slate-800/80 hover:bg-slate-800 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-3 border border-slate-700/60 hover:border-slate-600 transition-all cursor-pointer"
+        className="w-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-800 text-slate-700 dark:text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-3 border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600 transition-all cursor-pointer shadow-xs"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
           <path

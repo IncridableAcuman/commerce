@@ -1,8 +1,9 @@
 package com.commerce.backend.service;
 
+import com.commerce.backend.constants.Messages;
 import com.commerce.backend.entity.TokenEntity;
 import com.commerce.backend.entity.UserEntity;
-import com.commerce.backend.exception.CustomNotFoundException;
+import com.commerce.backend.exception.CustomUnauthorizedException;
 import com.commerce.backend.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,20 @@ public class TokenService {
         token.setExpiration(LocalDateTime.now().plusDays(7));
         tokenRepository.save(token);
     }
+
     public TokenEntity getToken(UserEntity user){
-        return tokenRepository.findByUser(user).orElseThrow(CustomNotFoundException::new);
+        TokenEntity token = tokenRepository.findByUser(user)
+                .orElseThrow(() -> new CustomUnauthorizedException(Messages.INVALID_OR_EXPIRED_TOKEN));
+        if (token.getExpiration() != null && token.getExpiration().isBefore(LocalDateTime.now())) {
+            tokenRepository.delete(token);
+            throw new CustomUnauthorizedException(Messages.INVALID_OR_EXPIRED_TOKEN);
+        }
+        return token;
     }
+
+    @Transactional
     public void deleteToken(UserEntity user){
         tokenRepository.findByUser(user).ifPresent(tokenRepository::delete);
     }
 }
+

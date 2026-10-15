@@ -34,14 +34,14 @@ export const CategoryBar = ({
   loading = false,
 }: CategoryBarProps) => {
   return (
-    <div className="py-6 border-b border-slate-800/80" id="categories-section">
+    <div className="py-6 border-b border-slate-200 dark:border-slate-800/80 transition-colors" id="categories-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-lg font-bold text-white tracking-wide">Kategoriyalar</h2>
+            <Layers className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-wide">Kategoriyalar</h2>
           </div>
-          <span className="text-xs text-slate-400 font-medium">
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             {categories.length} ta mavjud yo'nalish
           </span>
         </div>
@@ -54,7 +54,7 @@ export const CategoryBar = ({
             className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
               selectedCategory === null
                 ? "text-white shadow-md shadow-indigo-500/20"
-                : "text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800"
+                : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 shadow-xs"
             }`}
           >
             {selectedCategory === null && (
@@ -80,7 +80,7 @@ export const CategoryBar = ({
                 className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
                   isSelected
                     ? "text-white shadow-md shadow-indigo-500/20"
-                    : "text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800"
+                    : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 shadow-xs"
                 }`}
               >
                 {isSelected && (
@@ -97,7 +97,7 @@ export const CategoryBar = ({
                     className={`ml-1 text-[11px] px-1.5 py-0.5 rounded-full font-semibold ${
                       isSelected
                         ? "bg-white/20 text-white"
-                        : "bg-slate-800 text-slate-400"
+                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                     }`}
                   >
                     {cat.productCount}
@@ -110,7 +110,7 @@ export const CategoryBar = ({
           {loading && categories.length === 0 && (
             <div className="flex gap-2">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-28 h-10 bg-slate-800/60 rounded-xl animate-pulse" />
+                <div key={i} className="w-28 h-10 bg-slate-200 dark:bg-slate-800/60 rounded-xl animate-pulse" />
               ))}
             </div>
           )}

@@ -90,18 +90,18 @@ export const OrderDetailModal = ({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl shadow-black/60 overflow-hidden flex flex-col max-h-[90vh]"
+          className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl shadow-black/30 dark:shadow-black/60 overflow-hidden flex flex-col max-h-[90vh]"
         >
           {/* Header */}
-          <div className="p-6 border-b border-slate-800 flex items-center justify-between gap-4 bg-slate-900/50">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 bg-slate-50 dark:bg-slate-900/50">
             <div>
               <div className="flex items-center gap-3">
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                   Buyurtma #{order.orderNumber}
                 </h3>
                 <OrderStatusBadge status={order.status} />
               </div>
-              <p className="text-xs text-slate-400 mt-1">{formattedDate}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{formattedDate}</p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -109,16 +109,16 @@ export const OrderDetailModal = ({
                 href={`http://localhost:8080/api/v1/orders/track/${order.orderNumber}/invoice-html`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-indigo-300 hover:text-white border border-slate-700 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-semibold text-indigo-600 dark:text-indigo-300 hover:text-indigo-700 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-colors"
                 title="HTML hisob-fakturasini ko'rish"
               >
-                <FileText className="w-3.5 h-3.5 text-indigo-400" />
+                <FileText className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                 <span className="hidden sm:inline">Kvitansiya (HTML)</span>
               </a>
 
               <button
                 onClick={onClose}
-                className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -128,23 +128,23 @@ export const OrderDetailModal = ({
           {/* Body */}
           <div className="p-6 overflow-y-auto space-y-6">
             {/* Status Timeline */}
-            <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-800">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800">
               <OrderTimeline status={order.status} />
             </div>
 
             {/* Mahsulotlar ro'yxati */}
             <div>
-              <h4 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                <Package className="w-4 h-4 text-indigo-400" />
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3 flex items-center gap-2">
+                <Package className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                 Buyurtma tarkibi ({order.items?.length || 0} ta mahsulot)
               </h4>
               <div className="space-y-2.5">
                 {order.items?.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-3 rounded-2xl bg-slate-800/30 border border-slate-800/60"
+                    className="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-800/60"
                   >
-                    <div className="w-14 h-14 rounded-xl bg-slate-800 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center">
                       {item.productImageUrl ? (
                         <img
                           src={item.productImageUrl}
@@ -152,18 +152,18 @@ export const OrderDetailModal = ({
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <Package className="w-6 h-6 text-slate-500" />
+                        <Package className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h5 className="text-sm font-medium text-white truncate">
+                      <h5 className="text-sm font-medium text-slate-900 dark:text-white truncate">
                         {item.productTitle}
                       </h5>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         ${item.price.toFixed(2)} × {item.quantity} dona
                       </p>
                     </div>
-                    <div className="text-right font-semibold text-white text-sm">
+                    <div className="text-right font-semibold text-slate-900 dark:text-white text-sm">
                       ${item.subtotal.toFixed(2)}
                     </div>
                   </div>
@@ -174,25 +174,25 @@ export const OrderDetailModal = ({
             {/* Yetkazib berish va to'lov ma'lumotlari */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Qabul qiluvchi */}
-              <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-800 space-y-2.5">
-                <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2.5">
+                <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Yetkazib berish manzili
                 </h5>
-                <div className="space-y-1.5 text-xs text-slate-300">
-                  <div className="flex items-center gap-2 text-white font-medium">
-                    <User className="w-3.5 h-3.5 text-indigo-400" />
+                <div className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center gap-2 text-slate-900 dark:text-white font-medium">
+                    <User className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                     <span>{order.customerName}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-slate-500" />
+                    <Phone className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                     <span>{order.customerPhone}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-slate-500" />
+                    <Mail className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                     <span>{order.customerEmail}</span>
                   </div>
-                  <div className="flex items-start gap-2 pt-1 border-t border-slate-700/50">
-                    <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2 pt-1 border-t border-slate-200 dark:border-slate-700/50">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
                     <span>
                       {order.shippingAddress}
                       {order.city ? `, ${order.city}` : ""}
@@ -200,7 +200,7 @@ export const OrderDetailModal = ({
                     </span>
                   </div>
                   {order.orderNotes && (
-                    <div className="flex items-start gap-2 pt-1 text-slate-400 italic">
+                    <div className="flex items-start gap-2 pt-1 text-slate-500 dark:text-slate-400 italic">
                       <FileText className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                       <span>"{order.orderNotes}"</span>
                     </div>
@@ -209,36 +209,36 @@ export const OrderDetailModal = ({
               </div>
 
               {/* To'lov ma'lumoti */}
-              <div className="p-4 rounded-2xl bg-slate-800/40 border border-slate-800 space-y-2.5 flex flex-col justify-between">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2.5 flex flex-col justify-between">
                 <div>
-                  <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                  <h5 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                     To'lov holati
                   </h5>
                   <div className="space-y-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400 flex items-center gap-1.5">
-                        <CreditCard className="w-3.5 h-3.5 text-indigo-400" />
+                      <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                        <CreditCard className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                         Usul:
                       </span>
-                      <span className="text-white font-medium">
+                      <span className="text-slate-900 dark:text-white font-medium">
                         {paymentMethodLabels[order.paymentMethod] || order.paymentMethod}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Holat:</span>
+                      <span className="text-slate-500 dark:text-slate-400">Holat:</span>
                       <PaymentStatusBadge status={order.paymentStatus} />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-700/50 space-y-1">
-                  <div className="flex items-center justify-between text-xs text-slate-400">
+                <div className="pt-3 border-t border-slate-200 dark:border-slate-700/50 space-y-1">
+                  <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>Yetkazib berish:</span>
-                    <span className="text-emerald-400 font-medium">Bepul</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">Bepul</span>
                   </div>
-                  <div className="flex items-center justify-between text-base font-bold text-white pt-1">
+                  <div className="flex items-center justify-between text-base font-bold text-slate-900 dark:text-white pt-1">
                     <span>Jami summa:</span>
-                    <span className="text-indigo-400">
+                    <span className="text-indigo-600 dark:text-indigo-400">
                       ${order.totalAmount.toFixed(2)}
                     </span>
                   </div>
@@ -248,13 +248,13 @@ export const OrderDetailModal = ({
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 sm:p-6 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between gap-3">
+          <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex items-center justify-between gap-3">
             {canCancel &&
             (order.status === "PENDING" || order.status === "CONFIRMED") ? (
               <button
                 onClick={handleCancel}
                 disabled={cancelling}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
               >
                 <Ban className="w-4 h-4" />
                 <span>{cancelling ? "Bekor qilinmoqda..." : "Buyurtmani bekor qilish"}</span>
@@ -265,7 +265,7 @@ export const OrderDetailModal = ({
 
             <button
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 text-xs font-semibold transition-colors cursor-pointer"
             >
               Yopish
             </button>

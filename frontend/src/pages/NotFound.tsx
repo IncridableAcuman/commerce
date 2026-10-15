@@ -1,10 +1,12 @@
 import { ShoppingBag, ShieldCheck, Truck, Headphones, Home, ArrowLeft, SearchX } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 const NotFound = () => {
   return (
-    <div className="w-screen h-screen bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
-      <div className="w-full h-full bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+    <div className="w-screen h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
+      <div className="w-full h-full bg-white dark:bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         
         {/* Chap tomon: E-commerce Banner */}
         <div className="lg:col-span-5 relative bg-linear-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 lg:p-16 flex flex-col justify-between text-white overflow-hidden">
@@ -54,7 +56,11 @@ const NotFound = () => {
         </div>
 
         {/* O'ng tomon: Asosiy xabar va tugmalar */}
-        <div className="lg:col-span-7 bg-slate-900 p-8 lg:p-16 flex flex-col justify-center items-center text-center">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 p-8 lg:p-16 flex flex-col justify-center items-center text-center relative">
+          <div className="absolute top-6 right-6">
+            <ThemeToggle />
+          </div>
+
           <div className="max-w-md w-full mx-auto">
             
             <motion.div
@@ -64,42 +70,39 @@ const NotFound = () => {
             >
               {/* Katta 404 raqami va Ikonka */}
               <div className="relative flex items-center justify-center mb-6">
-                <span className="text-8xl lg:text-9xl font-black text-slate-800/60 select-none tracking-widest">
+                <span className="text-8xl lg:text-9xl font-black text-slate-200 dark:text-slate-800/60 select-none tracking-widest">
                   404
                 </span>
-                <div className="absolute w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shadow-xl">
+                <div className="absolute w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-xl">
                   <SearchX className="w-8 h-8" />
                 </div>
               </div>
 
-              <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight mb-2">
+              <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
                 Sahifa topilmadi
               </h1>
-              <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 text-sm mb-8 leading-relaxed">
                 Afsuski, bunday sahifa mavjud emas. Havolani xato kiritgan bo'lishingiz yoki sahifa eskirgan bo'lishi mumkin.
               </p>
 
               {/* Harakatga chaqiruvchi tugmalar */}
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
-                <motion.a
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  href="/"
+                <Link
+                  to="/"
                   className="w-full sm:flex-1 bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 transition-all duration-300"
                 >
                   <Home className="w-4 h-4" />
                   <span>Bosh sahifa</span>
-                </motion.a>
+                </Link>
 
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
+                <button
+                  type="button"
                   onClick={() => window.history.back()}
-                  className="w-full sm:flex-1 bg-slate-800 hover:bg-slate-700/80 border border-slate-700/60 text-slate-200 font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer"
+                  className="w-full sm:flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 font-medium py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Ortga qaytish</span>
-                </motion.button>
+                </button>
               </div>
             </motion.div>
 

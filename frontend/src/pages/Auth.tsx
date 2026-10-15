@@ -8,14 +8,15 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import ThemeToggle from "../components/ThemeToggle";
 
 const Auth = () => {
   const [isAuth, setIsAuth] = useState(true); // true = Sign In, false = Sign Up
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="w-screen h-screen bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
-      <div className="w-full h-full bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+    <div className="w-screen h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
+      <div className="w-full h-full bg-white dark:bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         {/* Chap tomon: E-commerce Banner */}
         <div className="lg:col-span-5 relative bg-linear-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 lg:p-16 flex flex-col justify-between text-white overflow-hidden">
           {/* Orqa fondagi dekorativ elementlar */}
@@ -69,7 +70,11 @@ const Auth = () => {
         </div>
 
         {/* O'ng tomon: Forma qismi */}
-        <div className="lg:col-span-7 bg-slate-900 p-8 lg:p-16 flex flex-col justify-center">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 p-8 lg:p-16 flex flex-col justify-center relative">
+          <div className="absolute top-6 right-6">
+            <ThemeToggle />
+          </div>
+
           <div className="max-w-md w-full mx-auto">
             {/* Sarlavha */}
             <div className="mb-8">
@@ -77,11 +82,11 @@ const Auth = () => {
                 key={isAuth ? "title-in" : "title-up"}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-2xl lg:text-3xl font-bold text-white tracking-tight"
+                className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight"
               >
                 {isAuth ? "Hisobga kirish" : "Yangi hisob yaratish"}
               </motion.h1>
-              <p className="text-slate-400 text-sm mt-1">
+              <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                 {isAuth
                   ? "Ma'lumotlaringizni kiriting va xaridlarni davom eting"
                   : "Bir necha soniya ichida ro'yxatdan o'ting"}
@@ -105,21 +110,21 @@ const Auth = () => {
             {/* Pastki o'tish tugmasi */}
             <div className="mt-8 text-center">
               {isAuth ? (
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   Hisobingiz yo'qmi?{" "}
                   <button
                     onClick={() => setIsAuth(false)}
-                    className="text-indigo-400 font-semibold hover:underline cursor-pointer"
+                    className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline cursor-pointer"
                   >
                     Ro'yxatdan o'tish
                   </button>
                 </p>
               ) : (
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   Hisobingiz bormi?{" "}
                   <button
                     onClick={() => setIsAuth(true)}
-                    className="text-indigo-400 font-semibold hover:underline cursor-pointer"
+                    className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline cursor-pointer"
                   >
                     Kirish
                   </button>

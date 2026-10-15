@@ -1,92 +1,167 @@
-import axios, { type AxiosInstance, AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  type AxiosInstance,
+  AxiosError,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
+
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
 
 export const api: AxiosInstance = axios.create({
-    withCredentials: true,
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1",
-    timeout: 10000,
+  withCredentials: true,
+  baseURL,
+  timeout: 10000,
 });
+
+// Parallel 401 refresh so'rovlarini to'g'ri boshqarish uchun navbat (Queue / Mutex)
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else if (token) {
+      promise.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+// Ochiq auth yo'llari (bularga token yuborish shart emas va 401 bo'lsa refresh qilinmaydi)
+const publicAuthRoutes = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/verify-email",
+  "/auth/resend-otp",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+  "/auth/refresh",
+  "/auth/google",
+];
+
+const isAuthRoute = (url?: string): boolean => {
+  if (!url) return false;
+  return publicAuthRoutes.some((route) => url.includes(route));
+};
 
 // Request Interceptor: Logging va JWT token qo'shish
 api.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-        const publicAuthRoutes = [
-            '/auth/login',
-            '/auth/register',
-            '/auth/verify-email',
-            '/auth/resend-otp',
-            '/auth/forgot-password',
-            '/auth/reset-password',
-            '/auth/refresh',
-            '/auth/google'
-        ];
-        const isPublicAuthRoute = publicAuthRoutes.some(route => config.url?.endsWith(route));
-        const token = localStorage.getItem("accessToken");
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem("accessToken");
 
-        if (token && !isPublicAuthRoute) {
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-
-        if (import.meta.env.DEV) {
-            console.debug(`[API REQ] ${config.method?.toUpperCase()} ${config.url}`, config.params || "");
-        }
-        return config;
-    },
-    (error: AxiosError) => {
-        console.error('[API REQ ERROR]', error);
-        return Promise.reject(error);
+    if (token && !isAuthRoute(config.url)) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (import.meta.env.DEV) {
+      console.debug(`[API REQ] ${config.method?.toUpperCase()} ${config.url}`, config.params || "");
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    console.error("[API REQ ERROR]", error);
+    return Promise.reject(error);
+  }
 );
 
-// Response Interceptor: 401/403 bo'lganda avto-refresh qilish va xatoliklarni chiroyli loglash
+// Response Interceptor: Faqat 401 Unauthorized bo'lganda avto-refresh qilish (Queue bilan)
 api.interceptors.response.use(
-    (response: AxiosResponse) => {
-        if (import.meta.env.DEV) {
-            console.debug(`[API RES] ${response.status} ${response.config.url}`);
-        }
-        return response;
-    },
-    async (error: AxiosError) => {
-        const originalRequest = error.config as InternalAxiosRequestConfig & {
-            _retry?: boolean;
-        };
-
-        const errorData = error.response?.data as any;
-        if (errorData) {
-            console.warn(`[API ERROR ${error.response?.status}] ${error.config?.url}:`, {
-                message: errorData.message,
-                validationErrors: errorData.validationErrors,
-                path: errorData.path
-            });
-        }
-
-        if ((error.response?.status === 401 || error.response?.status === 403) && originalRequest && !originalRequest._retry) {
-            originalRequest._retry = true;
-
-            // Refresh so'rovining o'zi muvaffaqiyatsiz bo'lsa siklni to'xtatamiz
-            if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
-                localStorage.removeItem("accessToken");
-                return Promise.reject(error);
-            }
-
-            try {
-                const { data } = await api.get("/auth/refresh", { withCredentials: true });
-                localStorage.setItem("accessToken", data.accessToken);
-                
-                if (originalRequest.headers) {
-                    originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-                }
-                return api(originalRequest);
-            } catch (refreshErr) {
-                localStorage.removeItem("accessToken");
-                // Agar ochiq sahifada bo'lmasa, auth sahifasiga yo'naltirish
-                if (!window.location.pathname.startsWith('/auth') && window.location.pathname !== '/') {
-                    window.location.href = "/auth";
-                }
-                return Promise.reject(refreshErr);
-            }
-        }
-        return Promise.reject(error);
+  (response: AxiosResponse) => {
+    if (import.meta.env.DEV) {
+      console.debug(`[API RES] ${response.status} ${response.config.url}`);
     }
+    return response;
+  },
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
+
+    const status = error.response?.status;
+    const errorData = error.response?.data as any;
+
+    if (errorData && import.meta.env.DEV) {
+      console.warn(`[API ERROR ${status}] ${originalRequest?.url}:`, {
+        message: errorData.message,
+        validationErrors: errorData.validationErrors,
+        path: errorData.path,
+      });
+    }
+
+    // Faqat 401 Unauthorized da refresh qilish kerak (403 Forbidden huquq yetarli emasligini bildiradi)
+    if (status === 401 && originalRequest && !originalRequest._retry) {
+      // Agar so'rov auth endpointlarining o'ziga bo'lsa, qayta urinmaymiz
+      if (isAuthRoute(originalRequest.url)) {
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        // Agar boshqa so'rov allaqachon refresh qilayotgan bo'lsa, navbatda kutamiz
+        return new Promise<AxiosResponse>((resolve, reject) => {
+          failedQueue.push({
+            resolve: (newToken: string) => {
+              if (originalRequest.headers) {
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              }
+              resolve(api(originalRequest));
+            },
+            reject: (err: unknown) => {
+              reject(err);
+            },
+          });
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // Alohida toza axios so'rovi orqali tokenni yangilash
+        const response = await axios.get<{ accessToken: string }>(`${baseURL}/auth/refresh`, {
+          withCredentials: true,
+        });
+
+        const newAccessToken = response.data.accessToken;
+        localStorage.setItem("accessToken", newAccessToken);
+
+        // Global hodisa orqali Zustand store va boshqa joylarni sinxronizatsiya qilish
+        window.dispatchEvent(
+          new CustomEvent("auth:token-refreshed", { detail: { token: newAccessToken } })
+        );
+
+        processQueue(null, newAccessToken);
+
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        }
+        return api(originalRequest);
+      } catch (refreshErr) {
+        processQueue(refreshErr, null);
+        localStorage.removeItem("accessToken");
+
+        window.dispatchEvent(new CustomEvent("auth:session-expired"));
+
+        // Agar foydalanuvchi himoyalangan sahifada bo'lsa, login sahifasiga yo'naltirish
+        const publicPaths = ["/", "/auth", "/forgot-password", "/reset-password", "/verify-email", "/track"];
+        const currentPath = window.location.pathname;
+        const isPublicPath = publicPaths.some(p => currentPath === p || currentPath.startsWith("/products/"));
+
+        if (!isPublicPath) {
+          window.location.href = `/auth?redirect=${encodeURIComponent(currentPath)}`;
+        }
+
+        return Promise.reject(refreshErr);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 export default api;

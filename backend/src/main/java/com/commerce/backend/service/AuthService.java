@@ -148,10 +148,17 @@ public class AuthService {
     }
 
     public void logout(String refreshToken, HttpServletResponse response){
-        UserEntity user = validateTokenAndGetUserFromToken(refreshToken);
-        tokenService.deleteToken(user);
-        cookieUtil.clearCookie(response);
-        log.info("Foydalanuvchi tizimdan chiqdi: email={}", user.getEmail());
+        try {
+            if (refreshToken != null && !refreshToken.isBlank()) {
+                UserEntity user = validateTokenAndGetUserFromToken(refreshToken);
+                tokenService.deleteToken(user);
+                log.info("Foydalanuvchi tizimdan chiqdi: email={}", user.getEmail());
+            }
+        } catch (Exception e) {
+            log.warn("Logout token tozalashda ogohlantirish: {}", e.getMessage());
+        } finally {
+            cookieUtil.clearCookie(response);
+        }
     }
 
     public AuthDto.AuthResponse refresh(String refreshToken, HttpServletResponse response){

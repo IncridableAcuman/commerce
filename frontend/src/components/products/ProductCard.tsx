@@ -60,10 +60,10 @@ export const ProductCard = ({
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
       onClick={() => onQuickView(product)}
-      className="group relative bg-slate-900/60 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl overflow-hidden shadow-lg shadow-black/20 hover:shadow-indigo-500/10 transition-all duration-300 flex flex-col h-full cursor-pointer"
+      className="group relative bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl shadow-black/5 dark:shadow-black/20 hover:shadow-indigo-500/10 transition-all duration-300 flex flex-col h-full cursor-pointer"
     >
       {/* 1. Rasm qismi va Floating tugmalar */}
-      <div className="relative w-full aspect-4/3 bg-slate-950 overflow-hidden">
+      <div className="relative w-full aspect-4/3 bg-slate-100 dark:bg-slate-950 overflow-hidden">
         <img
           src={imgError || !product.imageUrl ? placeholderImage : product.imageUrl}
           alt={product.title}
@@ -73,11 +73,11 @@ export const ProductCard = ({
         />
         
         {/* Gradient shadow for contrast */}
-        <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-black/20 opacity-60 group-hover:opacity-40 transition-opacity" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-transparent to-black/20 opacity-60 group-hover:opacity-40 transition-opacity" />
 
         {/* Kategoriya burchak yorlig'i */}
         {product.categoryName && (
-          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur-md border border-slate-700/60 text-[11px] font-semibold text-indigo-300 tracking-wide uppercase">
+          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/90 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/80 dark:border-slate-700/60 text-[11px] font-semibold text-indigo-600 dark:text-indigo-300 tracking-wide uppercase shadow-xs">
             {product.categoryName}
           </div>
         )}
@@ -88,10 +88,10 @@ export const ProductCard = ({
           <button
             onClick={handleToggleFavorite}
             aria-label="Sevimlilarga qo'shish"
-            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-200 cursor-pointer ${
+            className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-200 cursor-pointer shadow-xs ${
               isFavorite
                 ? "bg-rose-500 text-white border-rose-400 shadow-md shadow-rose-500/30 scale-105"
-                : "bg-slate-900/70 hover:bg-slate-900 text-slate-300 hover:text-white border-slate-700/60"
+                : "bg-white/80 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border-slate-200 dark:border-slate-700/60"
             }`}
           >
             <Heart className={`w-4 h-4 ${isFavorite ? "fill-white" : ""}`} />
@@ -104,7 +104,7 @@ export const ProductCard = ({
               onQuickView(product);
             }}
             aria-label="Tezkor ko'rish"
-            className="w-8 h-8 rounded-full bg-slate-900/70 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700/60 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-md cursor-pointer"
+            className="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700/60 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-md cursor-pointer shadow-xs"
           >
             <Eye className="w-4 h-4" />
           </button>
@@ -119,7 +119,7 @@ export const ProductCard = ({
                   e.stopPropagation();
                   onEdit(product);
                 }}
-                className="p-1.5 rounded-lg bg-slate-900/80 hover:bg-indigo-600 text-slate-300 hover:text-white border border-slate-700 text-xs transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/80 hover:bg-indigo-600 text-slate-700 dark:text-slate-300 hover:text-white border border-slate-200 dark:border-slate-700 text-xs transition-colors cursor-pointer"
                 title="Tahrirlash"
               >
                 <Edit className="w-3.5 h-3.5" />
@@ -131,7 +131,7 @@ export const ProductCard = ({
                   e.stopPropagation();
                   onDelete(product.id);
                 }}
-                className="p-1.5 rounded-lg bg-slate-900/80 hover:bg-rose-600 text-slate-300 hover:text-white border border-slate-700 text-xs transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg bg-white/90 dark:bg-slate-900/80 hover:bg-rose-600 text-slate-700 dark:text-slate-300 hover:text-white border border-slate-200 dark:border-slate-700 text-xs transition-colors cursor-pointer"
                 title="O'chirish"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -146,44 +146,44 @@ export const ProductCard = ({
         <div className="space-y-1.5">
           {/* Reyting va Zaxira holati */}
           <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1 text-amber-400 font-medium">
+            <div className="flex items-center gap-1 text-amber-500 font-medium">
               <Star className="w-3.5 h-3.5 fill-amber-400" />
               <span>{product.rating ? product.rating.toFixed(1) : "5.0"}</span>
             </div>
 
             {product.stock > 5 ? (
-              <div className="flex items-center gap-1 text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[11px] font-medium">Omborda mavjud</span>
               </div>
             ) : product.stock > 0 ? (
-              <div className="flex items-center gap-1 text-amber-400">
+              <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
                 <AlertTriangle className="w-3 h-3" />
                 <span className="text-[11px] font-medium">{product.stock} ta qoldi</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1 text-rose-400">
+              <div className="flex items-center gap-1 text-rose-600 dark:text-rose-400">
                 <span className="text-[11px] font-medium">Tugagan</span>
               </div>
             )}
           </div>
 
           {/* Sarlavha */}
-          <h3 className="font-bold text-slate-100 group-hover:text-indigo-400 transition-colors text-sm sm:text-base line-clamp-1 leading-snug">
+          <h3 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors text-sm sm:text-base line-clamp-1 leading-snug">
             {product.title}
           </h3>
 
           {/* Qisqa tavsif */}
-          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
             {product.content}
           </p>
         </div>
 
         {/* 3. Narx va Savatga qo'shish */}
-        <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
+        <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
           <div>
-            <span className="text-xs text-slate-500 block">Narxi:</span>
-            <span className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+            <span className="text-xs text-slate-500 dark:text-slate-400 block">Narxi:</span>
+            <span className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">
               {formattedPrice}
             </span>
           </div>
@@ -195,7 +195,7 @@ export const ProductCard = ({
               isAdded
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/25"
                 : product.stock <= 0
-                ? "bg-slate-800 text-slate-500 cursor-not-allowed"
+                ? "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed"
                 : "bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-md shadow-indigo-500/20 active:scale-95"
             }`}
           >

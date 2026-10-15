@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Mail, ArrowRight, ShieldCheck, RefreshCw, ShoppingBag, Truck, Headphones, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
+import ThemeToggle from "../components/ThemeToggle";
 
 const VerifyEmail = () => {
   const [searchParams] = useSearchParams();
@@ -53,8 +54,8 @@ const VerifyEmail = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
-      <div className="w-full h-full bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+    <div className="w-screen h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
+      <div className="w-full h-full bg-white dark:bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         {/* Chap tomon: E-commerce Banner */}
         <div className="lg:col-span-5 relative bg-linear-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 lg:p-16 flex flex-col justify-between text-white overflow-hidden">
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none" />
@@ -99,16 +100,20 @@ const VerifyEmail = () => {
         </div>
 
         {/* O'ng tomon: Forma qismi */}
-        <div className="lg:col-span-7 bg-slate-900 p-8 lg:p-16 flex flex-col justify-center">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 p-8 lg:p-16 flex flex-col justify-center relative">
+          <div className="absolute top-6 right-6">
+            <ThemeToggle />
+          </div>
+
           <div className="max-w-md w-full mx-auto">
             <div className="mb-6">
-              <a
-                href="/auth"
-                className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Kirish sahifasiga qaytish</span>
-              </a>
+              </Link>
             </div>
 
             <motion.div
@@ -116,17 +121,17 @@ const VerifyEmail = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-600 dark:text-indigo-400">
                 <Mail className="w-6 h-6" />
               </div>
 
-              <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight mb-2">
+              <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
                 Emailni tasdiqlash
               </h1>
-              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
                 {email ? (
                   <>
-                    <span className="text-indigo-300 font-medium">{email}</span> manziliga tasdiqlash kodi yuborildi.
+                    <span className="text-indigo-600 dark:text-indigo-400 font-medium">{email}</span> manziliga tasdiqlash kodi yuborildi.
                   </>
                 ) : (
                   "Pochtaga yuborilgan tasdiqlash kodini kiriting"
@@ -136,8 +141,8 @@ const VerifyEmail = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email input (agar query paramda bo'lmasa yoki o'zgartirmoqchi bo'lsa) */}
                 <div className="space-y-1.5">
-                  <label className="text-xs text-slate-400 pl-1">Elektron pochta</label>
-                  <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                  <label className="text-xs text-slate-600 dark:text-slate-400 pl-1">Elektron pochta</label>
+                  <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                     <Mail className="w-5 h-5 text-slate-400" />
                     <input
                       type="email"
@@ -145,15 +150,15 @@ const VerifyEmail = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
                       required
-                      className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-sm"
+                      className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     />
                   </div>
                 </div>
 
                 {/* OTP code input */}
                 <div className="space-y-1.5">
-                  <label className="text-xs text-slate-400 pl-1">6 xonali tasdiqlash kodi (OTP)</label>
-                  <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                  <label className="text-xs text-slate-600 dark:text-slate-400 pl-1">6 xonali tasdiqlash kodi (OTP)</label>
+                  <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                     <input
                       type="text"
                       maxLength={6}
@@ -161,26 +166,26 @@ const VerifyEmail = () => {
                       onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                       placeholder="Masalan: 123456"
                       required
-                      className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-center tracking-widest text-lg font-mono font-bold"
+                      className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-center tracking-widest text-lg font-mono font-bold"
                     />
                   </div>
                 </div>
 
                 {/* Resend OTP button */}
                 <div className="flex items-center justify-between text-xs pt-1">
-                  <span className="text-slate-400">Kodni olmadingizmi?</span>
+                  <span className="text-slate-600 dark:text-slate-400">Kodni olmadingizmi?</span>
                   {canResend ? (
                     <button
                       type="button"
                       onClick={handleResend}
                       disabled={isLoading}
-                      className="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1 cursor-pointer transition-colors"
+                      className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
                       <span>Kodni qayta yuborish</span>
                     </button>
                   ) : (
-                    <span className="text-slate-500">
+                    <span className="text-slate-400 dark:text-slate-500">
                       Qayta yuborish ({timer}s)
                     </span>
                   )}

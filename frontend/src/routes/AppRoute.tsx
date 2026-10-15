@@ -16,9 +16,12 @@ import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "../stores/authStore";
+import { useThemeStore } from "../stores/themeStore";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const AppRoute = () => {
   const { initAuth } = useAuthStore();
+  const { resolvedTheme } = useThemeStore();
 
   useEffect(() => {
     initAuth();
@@ -26,7 +29,7 @@ const AppRoute = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
+      <ToastContainer position="top-right" autoClose={3000} theme={resolvedTheme} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products/:id" element={<ProductDetail />} />
@@ -35,14 +38,56 @@ const AppRoute = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/my-orders" element={<MyOrders />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/orders" element={<AdminDashboard />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN", "MANAGER"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN", "MANAGER"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN", "MANAGER"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/track" element={<TrackOrder />} />
         <Route path="/track/:orderNumber" element={<TrackOrder />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

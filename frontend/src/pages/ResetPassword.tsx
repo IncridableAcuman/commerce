@@ -1,9 +1,10 @@
 import { Lock, Eye, EyeOff, ArrowLeft, ArrowRight, KeyRound, ShoppingBag, ShieldCheck, Truck, Headphones, CheckCircle2, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
 import { toast } from "react-toastify";
+import ThemeToggle from "../components/ThemeToggle";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -34,8 +35,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
-      <div className="w-full h-full bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+    <div className="w-screen h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center overflow-hidden font-sans">
+      <div className="w-full h-full bg-white dark:bg-slate-900 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         
         {/* Chap tomon: E-commerce Banner */}
         <div className="lg:col-span-5 relative bg-linear-to-br from-indigo-600 via-purple-600 to-pink-600 p-8 lg:p-16 flex flex-col justify-between text-white overflow-hidden">
@@ -85,18 +86,22 @@ const ResetPassword = () => {
         </div>
 
         {/* O'ng tomon: Forma qismi */}
-        <div className="lg:col-span-7 bg-slate-900 p-8 lg:p-16 flex flex-col justify-center">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 p-8 lg:p-16 flex flex-col justify-center relative">
+          <div className="absolute top-6 right-6">
+            <ThemeToggle />
+          </div>
+
           <div className="max-w-md w-full mx-auto">
             
             {/* Orqaga qaytish havolasi */}
             <div className="mb-6">
-              <a
-                href="/auth"
-                className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Kirish sahifasiga qaytish</span>
-              </a>
+              </Link>
             </div>
 
             {!isSuccess ? (
@@ -106,21 +111,21 @@ const ResetPassword = () => {
                 transition={{ duration: 0.3 }}
               >
                 {/* Ikonka va Sarlavha */}
-                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-600 dark:text-indigo-400">
                   <KeyRound className="w-6 h-6" />
                 </div>
 
-                <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight mb-2">
+                <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
                   Yangi parol yarating
                 </h1>
-                <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-400 text-sm mb-8 leading-relaxed">
                   Parolingiz kamida 8 ta belgidan iborat bo'lishi va harflar hamda raqamlarni o'z ichiga olishi kerak.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Yangi parol */}
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                    <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                       <Lock className="w-5 h-5 text-slate-400" />
                       <input
                         type={showPassword ? "text" : "password"}
@@ -130,12 +135,12 @@ const ResetPassword = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-sm"
+                        className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                        className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
                       >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -144,7 +149,7 @@ const ResetPassword = () => {
 
                   {/* Parolni tasdiqlash */}
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                    <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 px-4 py-3.5 rounded-2xl focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                       <Lock className="w-5 h-5 text-slate-400" />
                       <input
                         type={showConfirmPassword ? "text" : "password"}
@@ -154,12 +159,12 @@ const ResetPassword = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="bg-transparent outline-none w-full text-white placeholder-slate-500 text-sm"
+                        className="bg-transparent outline-none w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                        className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
                       >
                         {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -203,13 +208,13 @@ const ResetPassword = () => {
                   Endi yangi parolingiz yordamida hisobingizga kirishingiz mumkin.
                 </p>
 
-                <a
-                  href="/auth"
+                <Link
+                  to="/auth"
                   className="inline-flex items-center justify-center gap-2 w-full bg-linear-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-medium py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-500/25 transition-all duration-300"
                 >
                   <span>Tizimga kirish</span>
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
               </motion.div>
             )}
 

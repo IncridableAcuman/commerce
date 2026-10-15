@@ -98,7 +98,7 @@ const Home = () => {
   );
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="w-full min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white transition-colors duration-200">
       {/* 1. Yuqori Navigatsiya */}
       <Navbar />
 
@@ -148,14 +148,14 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20 px-4 bg-slate-900/40 border border-slate-800/80 rounded-3xl space-y-4 max-w-lg mx-auto"
+            className="text-center py-20 px-4 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 rounded-3xl space-y-4 max-w-lg mx-auto shadow-xs"
           >
-            <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto">
               <PackageOpen className="w-8 h-8" />
             </div>
             <div className="space-y-1.5">
-              <h3 className="text-lg font-bold text-white">Hech qanday mahsulot topilmadi</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Hech qanday mahsulot topilmadi</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Qidiruv so'rovingizga yoki tanlangan filtrga mos mahsulot mavjud emas.
               </p>
             </div>
@@ -187,11 +187,11 @@ const Home = () => {
 
             {/* Sahifalash (Pagination) */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 pt-8 border-t border-slate-800/80">
+              <div className="flex items-center justify-center gap-2 pt-8 border-t border-slate-200 dark:border-slate-800/80">
                 <button
                   onClick={() => setPage(Math.max(0, currentPage - 1))}
                   disabled={currentPage === 0}
-                  className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-xs"
                   title="Oldingi sahifa"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -205,7 +205,7 @@ const Home = () => {
                       className={`w-9 h-9 rounded-xl transition-all cursor-pointer ${
                         currentPage === i
                           ? "bg-linear-to-r from-indigo-600 to-purple-600 text-white font-bold shadow-md shadow-indigo-500/20"
-                          : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800"
+                          : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 shadow-xs"
                       }`}
                     >
                       {i + 1}
@@ -216,7 +216,7 @@ const Home = () => {
                 <button
                   onClick={() => setPage(Math.min(totalPages - 1, currentPage + 1))}
                   disabled={currentPage >= totalPages - 1}
-                  className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-xs"
                   title="Keyingi sahifa"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -254,27 +254,27 @@ const Home = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setDeleteId(null)}
-              className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs"
+              className="fixed inset-0 bg-slate-950/60 dark:bg-slate-950/80 backdrop-blur-xs"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl text-center space-y-4 z-10"
+              className="relative w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl text-center space-y-4 z-10"
             >
-              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 dark:text-rose-400 flex items-center justify-center mx-auto">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-base font-bold text-white">Mahsulotni o'chirish</h4>
-                <p className="text-xs text-slate-400">
+                <h4 className="text-base font-bold text-slate-900 dark:text-white">Mahsulotni o'chirish</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Ushbu mahsulotni o'chirishga ishonchingiz komilmi? Bu amalni ortga qaytarib bo'lmaydi.
                 </p>
               </div>
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => setDeleteId(null)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+                  className="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
                 >
                   Bekor qilish
                 </button>
