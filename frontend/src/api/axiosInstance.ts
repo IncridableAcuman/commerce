@@ -5,7 +5,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 
-let rawBaseURL = import.meta.env.VITE_API_URL || "https://commerce-backend-nunc.onrender.com";
+let rawBaseURL = "https://commerce-backend-nunc.onrender.com";
 if (rawBaseURL && !rawBaseURL.endsWith("/api/v1") && !rawBaseURL.endsWith("/api/v1/")) {
   rawBaseURL = rawBaseURL.replace(/\/+$/, "") + "/api/v1";
 }
