@@ -39,7 +39,11 @@ services:
       - key: UPLOAD_DIR
         value: /app/uploads
       # Fallbacks & Optimizations
+      - key: JAVA_OPTS
+        value: "-XX:+UseSerialGC -Xss512k -XX:MaxRAM=512m -Xms64m -Xmx200m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=32m -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
       - key: ELASTICSEARCH_ENABLED
+        value: "false"
+      - key: RABBITMQ_ENABLED
         value: "false"
       - key: SHOW_SQL
         value: "false"

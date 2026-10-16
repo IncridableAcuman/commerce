@@ -2,6 +2,7 @@ package com.commerce.backend.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -36,5 +37,11 @@ public class RabbitMqConfig {
         template.setConnectionFactory(factory);
         template.setMessageConverter(jsonMessageConverter());
         return template;
+    }
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory factory){
+        RabbitAdmin admin = new RabbitAdmin(factory);
+        admin.setIgnoreDeclarationExceptions(true);
+        return admin;
     }
 }

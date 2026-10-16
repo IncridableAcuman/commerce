@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds">
+<configuration>
 
     <property name="LOG_PATH" value="logs" />
     <property name="LOG_FILE_NAME" value="commerce-app" />

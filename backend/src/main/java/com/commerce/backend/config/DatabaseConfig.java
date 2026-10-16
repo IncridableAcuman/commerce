@@ -78,8 +78,8 @@ public class DatabaseConfig {
         dataSource.setPassword(password);
 
         // Production-ready connection pooling for cloud providers (Neon, Render, Supabase)
-        dataSource.setMaximumPoolSize(10);
-        dataSource.setMinimumIdle(2);
+        dataSource.setMaximumPoolSize(4);
+        dataSource.setMinimumIdle(1);
         dataSource.setConnectionTimeout(20000);
         dataSource.setIdleTimeout(300000);
         dataSource.setMaxLifetime(1200000);

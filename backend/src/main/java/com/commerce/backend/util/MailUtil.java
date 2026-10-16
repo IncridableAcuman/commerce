@@ -17,10 +17,14 @@ public class MailUtil {
     private final JavaMailSender mailSender;
 
     @RabbitListener(queues = RabbitMqConfig.QUEUE_NAME)
+    public void receiveFromQueue(EmailPayload payload){
+        sendMail(payload);
+    }
+
     public void sendMail(EmailPayload payload){
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(payload.to());
             helper.setSubject(payload.subject());
             helper.setText(payload.text(),true);

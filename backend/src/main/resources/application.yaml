@@ -1,5 +1,9 @@
 server:
   port: ${PORT:8080}
+  tomcat:
+    threads:
+      max: 20
+      min-spare: 2
   servlet:
     context-path: /api/v1
     multipart:
@@ -17,19 +21,19 @@ spring:
     password: ${DB_PASSWORD:admin2003}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
+      maximum-pool-size: 4
+      minimum-idle: 1
       connection-timeout: 20000
       idle-timeout: 300000
       max-lifetime: 1200000
   jpa:
+    open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${DDL_AUTO:update}
     show-sql: ${SHOW_SQL:false}
     properties:
       hibernate:
         format_sql: false
-        dialect: org.hibernate.dialect.PostgreSQLDialect
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
@@ -58,6 +62,9 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USER:${RABBITMQ_USERNAME:guest}}
     password: ${RABBITMQ_PASS:${RABBITMQ_PASSWORD:guest}}
+    listener:
+      simple:
+        auto-startup: ${RABBITMQ_ENABLED:true}
   elasticsearch:
     uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
   security:

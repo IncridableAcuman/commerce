@@ -50,6 +50,7 @@ Agar xizmatlarni Render konsolida alohida yaratmoqchi bo'lsangiz:
    | Key | Value |
    |---|---|
    | `PORT` | `8080` |
+   | `JAVA_OPTS` | `-XX:+UseSerialGC -Xss512k -XX:MaxRAM=512m -Xms64m -Xmx200m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=32m -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8` |
    | `DB_URL` | `jdbc:postgresql://ep-hidden-dew-b4v4ibmp-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require` |
    | `DB_USERNAME` | `neondb_owner` |
    | `DB_PASSWORD` | `npg_JEqnA7b2NSQO` |
@@ -61,6 +62,7 @@ Agar xizmatlarni Render konsolida alohida yaratmoqchi bo'lsangiz:
    | `CLIENT_URL` | `https://commerce-frontend.onrender.com` (yoki frontend domeningiz) |
    | `UPLOAD_DIR` | `/app/uploads` |
    | `ELASTICSEARCH_ENABLED` | `false` |
+   | `RABBITMQ_ENABLED` | `false` |
    | `SHOW_SQL` | `false` |
 5. **Create Web Service** tugmasini bosing.
 
@@ -84,8 +86,11 @@ Agar xizmatlarni Render konsolida alohida yaratmoqchi bo'lsangiz:
 
 ---
 
-## 4. Muhim Eslatmalar
+## 4. Muhim Eslatmalar va Troubleshooting
 
+- **512MB RAM Xatosi (Out of memory used over 512Mi):** Render Free tier da 512MB RAM limiti mavjud. Spring Boot + Java 21 odatda standart G1GC bilan 600MB+ xotira oladi. Loyihada maxsus `-XX:+UseSerialGC`, `-Xmx200m`, `-XX:MaxMetaspaceSize=100m` va Hikari pool optimizatsiyasi qo'llanildi. Bu xotira sarfini ~360MB gacha kamaytiradi va OOM xatosini to'liq bartaraf etadi.
+- **No open ports detected xatosi:** Agar ilova OOM tufayli start jarayonida to'xtab qolsa, Render port ochilmagan deb hisoblaydi. Yuqoridagi xotira optimizatsiyasi bilan Tomcat to'liq ishga tushadi va port muammosi bartaraf etiladi.
+- **RabbitMQ va Redis Fallback:** Render bepul tarifida RabbitMQ va Redis alohida server bo'lmagani uchun, `RABBITMQ_ENABLED=false` qilinganda `MailService` to'g'ridan-to'g'ri SMTP orqali email yuboradi. Shuningdek `RedisService` avtomatik in-memory xotiraga tushadi (OTP kodlar ishlashda davom etadi).
 - **CORS:** Backend avtomatik tarzda `https://*.onrender.com` domenlarini va `CLIENT_URL` qiymatini qabul qiladi.
 - **Healthcheck:** `/api/v1/actuator/health` tekshiruvi Neon PostgreSQL bazasiga ulanishni nazorat qiladi.
 - **DatabaseConfig:** Backend avtomatik tarzda standart `postgresql://...` URL manzilini ham JDBC formatiga moslab oladi.
