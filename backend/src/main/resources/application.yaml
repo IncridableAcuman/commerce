@@ -106,7 +106,7 @@ file:
     dir: ${UPLOAD_DIR:./uploads}
 
 client:
-  url: ${CLIENT_URL:http://localhost:5173}
+  url: ${CLIENT_URL:https://commerce-frontend-eafn.onrender.com}
 
 management:
   endpoints:
