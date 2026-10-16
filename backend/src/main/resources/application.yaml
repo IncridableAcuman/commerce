@@ -106,7 +106,7 @@ file:
     dir: ${UPLOAD_DIR:./uploads}
 
 client:
-  url: ${CLIENT_URL:https://commerce-frontend-eafn.onrender.com}
+  url: ${CLIENT_URL:https://commerce-frontend-fm94.onrender.com/}
 
 management:
   endpoints:
