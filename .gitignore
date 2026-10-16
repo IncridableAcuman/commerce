@@ -8,10 +8,12 @@ Thumbs.db
 
 # Environment variables & secrets
 .env
-.env.local
-.env.*.local
+.env.*
 !.env.example
 !frontend/.env.example
+*.secret
+*.key
+secrets/
 
 # Build & Dependencies
 **/build/
@@ -20,3 +22,4 @@ Thumbs.db
 **/.gradle/
 **/logs/
 **/uploads/
+DEPLOY_RENDER.md

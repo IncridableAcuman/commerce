@@ -15,6 +15,13 @@ spring:
     import: "optional:file:.env[.properties]"
   application:
     name: backend
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
   datasource:
     url: ${DB_URL:${DATABASE_URL:jdbc:postgresql://localhost:5432/commerce}}
     username: ${DB_USERNAME:admin2003}
@@ -33,6 +40,7 @@ spring:
     show-sql: ${SHOW_SQL:false}
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -50,6 +58,8 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:}
+      repositories:
+        enabled: false
     elasticsearch:
       repositories:
         enabled: ${ELASTICSEARCH_ENABLED:false}
@@ -64,7 +74,7 @@ spring:
     password: ${RABBITMQ_PASS:${RABBITMQ_PASSWORD:guest}}
     listener:
       simple:
-        auto-startup: ${RABBITMQ_ENABLED:true}
+        auto-startup: ${RABBITMQ_ENABLED:false}
   elasticsearch:
     uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
   security:
@@ -79,6 +89,12 @@ spring:
               - profile
               - email
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+
+elasticsearch:
+  enabled: ${ELASTICSEARCH_ENABLED:false}
+
+rabbitmq:
+  enabled: ${RABBITMQ_ENABLED:false}
 
 jwt:
   secret: ${JWT_SECRET:uzbekistan_uzbekistan_0123456789}
@@ -110,4 +126,6 @@ management:
     redis:
       enabled: false
     mail:
+      enabled: false
+    elasticsearch:
       enabled: false

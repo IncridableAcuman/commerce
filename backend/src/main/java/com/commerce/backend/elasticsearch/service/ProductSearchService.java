@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @Service
 @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
-        name = "spring.data.elasticsearch.repositories.enabled",
+        name = "elasticsearch.enabled",
         havingValue = "true"
 )
 @RequiredArgsConstructor

@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.sql.DataSource;
 import java.net.URI;
 
 @Slf4j
 @Configuration
+@EnableJpaRepositories(basePackages = "com.commerce.backend.repository")
 public class DatabaseConfig {
 
     @Value("${spring.datasource.url:${DB_URL:${DATABASE_URL:jdbc:postgresql://localhost:5432/commerce}}}")

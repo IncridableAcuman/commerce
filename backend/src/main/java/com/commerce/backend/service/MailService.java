@@ -17,7 +17,7 @@ public class MailService {
     private final ObjectProvider<RabbitTemplate> templateProvider;
     private final MailUtil mailUtil;
 
-    @Value("${rabbitmq.enabled:true}")
+    @Value("${rabbitmq.enabled:false}")
     private boolean rabbitmqEnabled;
 
     public void sendMessageWithRabbitMq(EmailPayload payload){

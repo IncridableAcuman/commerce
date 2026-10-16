@@ -46,10 +46,10 @@ USER appuser
 EXPOSE 8080
 
 # Production JVM optimallashtirish bayroqlari (Render 512MB RAM chegarasi uchun maxsus sozlangan)
-ENV JAVA_OPTS="-XX:+UseSerialGC -Xss512k -XX:MaxRAM=512m -Xms64m -Xmx200m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=32m -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
+ENV JAVA_OPTS="-XX:+UseSerialGC -Xms64m -Xmx220m -XX:MaxMetaspaceSize=160m -XX:ReservedCodeCacheSize=24m -Xss256k -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
 
 # Salomatlik tekshiruvi (Healthcheck)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:${PORT:-8080}/api/v1/actuator/health || exit 1
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
